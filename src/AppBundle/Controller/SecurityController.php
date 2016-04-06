@@ -12,6 +12,11 @@ class SecurityController extends Controller
      */
     public function loginAction()
     {
+        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            // redirect authenticated users to homepage
+            return $this->redirect($this->generateUrl('homepage'));
+        }
+
         $helper = $this->get('security.authentication_utils');
 
         return $this->render('security/login.html.twig', array(
