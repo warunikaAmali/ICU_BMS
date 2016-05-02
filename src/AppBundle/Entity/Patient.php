@@ -154,7 +154,7 @@ class Patient
      */
     public function setGender($gender)
     {
-        $this->name = $gender;
+        $this->gender = $gender;
 
         return $this;
     }

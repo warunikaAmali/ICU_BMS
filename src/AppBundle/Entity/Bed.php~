@@ -24,7 +24,7 @@ class Bed
      *
      * @ORM\Column(name="oxygenSypply", type="string", length=15, nullable=false)
      */
-    private $oxygensypply;
+    private $oxygenSypply;
 
     /**
      * @var string
@@ -156,4 +156,10 @@ class Bed
     {
         return $this->bedno;
     }
+    /**
+     * @var string
+     */
+    private $oxygensypply;
+
+
 }

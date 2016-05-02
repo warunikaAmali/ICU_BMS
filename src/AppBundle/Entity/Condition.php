@@ -82,26 +82,35 @@ class Condition
      */
     private $date;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="date", type="date", nullable=false)
-     */
-    private $time;
-
-    /**
-     * Set time
-     *
-     * @param \Time $time
-     *
-     * @return Condition
-     */
-    public function setTime($time)
-    {
-        $this->time = $time;
-
-        return $this;
-    }
+//    /**
+//     * @var \DateTime
+//     *
+//     * @ORM\Column(name="date", type="date", nullable=false)
+//     */
+//    private $time;
+//    /**
+//     * Set time
+//     *
+//     * @param \Time $time
+//     *
+//     * @return Condition
+//     */
+//    public function setTime($time)
+//    {
+//        $this->time = $time;
+//        return $this;
+//    }
+//
+//
+//    /**
+//     * Get time
+//     *
+//     * @return \Time
+//     */
+//    public function getTime()
+//    {
+//        return $this->time;
+//    }
 
     /**
      * Set date
@@ -112,7 +121,7 @@ class Condition
      */
     public function setDate($date)
     {
-        $this->time = $date;
+        $this->date = $date;
 
         return $this;
     }
@@ -125,17 +134,6 @@ class Condition
     public function getDate()
     {
         return $this->date;
-    }
-
-
-    /**
-     * Get time
-     *
-     * @return \Time
-     */
-    public function getTime()
-    {
-        return $this->time;
     }
 
 
@@ -566,5 +564,34 @@ class Condition
     public function getHydrogenstate()
     {
         return $this->hydrogenstate;
+    }
+    /**
+     * @var \DateTime
+     */
+    private $time;
+
+
+    /**
+     * Set time
+     *
+     * @param \DateTime $time
+     *
+     * @return Condition
+     */
+    public function setTime($time)
+    {
+        $this->time = $time;
+
+        return $this;
+    }
+
+    /**
+     * Get time
+     *
+     * @return \DateTime
+     */
+    public function getTime()
+    {
+        return $this->time;
     }
 }

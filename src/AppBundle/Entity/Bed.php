@@ -22,9 +22,9 @@ class Bed
     /**
      * @var string
      *
-     * @ORM\Column(name="oxygenSypply", type="string", length=15, nullable=false)
+     * @ORM\Column(name="oxygenSupply", type="string", length=15, nullable=false)
      */
-    private $oxygensypply;
+    private $oxygenSupply;
 
     /**
      * @var string
@@ -76,27 +76,27 @@ class Bed
     }
 
     /**
-     * Set oxygensypply
+     * Set oxygensupply
      *
-     * @param string $oxygensypply
+     * @param string $oxygensupply
      *
      * @return Bed
      */
-    public function setOxygensypply($oxygensypply)
+    public function setOxygenSupply($oxygensupply)
     {
-        $this->oxygensypply = $oxygensypply;
+        $this->oxygenSupply = $oxygensupply;
 
         return $this;
     }
 
     /**
-     * Get oxygensypply
+     * Get oxygensupply
      *
      * @return string
      */
-    public function getOxygensypply()
+    public function getOxygenSupply()
     {
-        return $this->oxygensypply;
+        return $this->oxygenSupply;
     }
 
     /**
@@ -156,4 +156,10 @@ class Bed
     {
         return $this->bedno;
     }
+    /**
+     * @var string
+     */
+    private $oxygensypply;
+
+
 }
