@@ -7,6 +7,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 class SecurityController extends Controller
 {
+
+
     /**
      * @Route("/login", name="security_login_form")
      */
@@ -14,7 +16,8 @@ class SecurityController extends Controller
     {
         if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
             // redirect authenticated users to homepage
-            return $this->redirect($this->generateUrl('homepage'));
+
+            return $this->redirect($this->generateUrl('default_homepage'));
         }
 
         $helper = $this->get('security.authentication_utils');
@@ -28,6 +31,18 @@ class SecurityController extends Controller
     }
 
     /**
+     * @Route("/login/check", name="roleRedirect")
+     */
+    public function roleRedirection()
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_NURSE')) {
+            return $this->redirect($this->generateUrl('nurse_homepage'));
+        } else {
+            return $this->redirect($this->generateUrl('homepage'));
+        }
+    }
+
+    /**
      * This is the route the login form submits to.
      *
      * But, this will never be executed. Symfony will intercept this first
@@ -37,6 +52,8 @@ class SecurityController extends Controller
      */
     public function loginCheckAction()
     {
+
+
         throw new \Exception('This should never be reached!');
     }
 

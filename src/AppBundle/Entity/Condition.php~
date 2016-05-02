@@ -1,0 +1,306 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Condition
+ *
+ * @ORM\Table(name="condition")
+ * @ORM\Entity
+ */
+class Condition
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="acuteRenalFailure", type="string", length=5, nullable=false)
+     */
+    private $acuterenalfailure;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="confirmedInfection", type="string", length=5, nullable=false)
+     */
+    private $confirmedinfection;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="vasoactiveMedication", type="string", length=5, nullable=false)
+     */
+    private $vasoactivemedication;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="invasiveMedication", type="string", length=5, nullable=false)
+     */
+    private $invasivemedication;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nonInvaisveMedication", type="string", length=5, nullable=false)
+     */
+    private $noninvaisvemedication;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="dialysis", type="string", length=5, nullable=false)
+     */
+    private $dialysis;
+
+    /**
+     * @var integer
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Patient")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="BHT_No", referencedColumnName="BHT_No")
+     * })
+     */
+    private $bhtNo;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="recordNo", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * })
+     */
+    private $recordNo;
+
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="date", nullable=false)
+     */
+    private $date;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="date", nullable=false)
+     */
+    private $time;
+
+    /**
+     * Set time
+     *
+     * @param \Time $time
+     *
+     * @return Condition
+     */
+    public function setTime($time)
+    {
+        $this->time = $time;
+
+        return $this;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     *
+     * @return Condition
+     */
+    public function setDate($date)
+    {
+        $this->time = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+
+    /**
+     * Get time
+     *
+     * @return \Time
+     */
+    public function getTime()
+    {
+        return $this->time;
+    }
+
+
+    /**
+     * Set acuterenalfailure
+     *
+     * @param string $acuterenalfailure
+     *
+     * @return Condition
+     */
+    public function setAcuterenalfailure($acuterenalfailure)
+    {
+        $this->acuterenalfailure = $acuterenalfailure;
+
+        return $this;
+    }
+
+    /**
+     * Get acuterenalfailure
+     *
+     * @return string
+     */
+    public function getAcuterenalfailure()
+    {
+        return $this->acuterenalfailure;
+    }
+
+    /**
+     * Set confirmedinfection
+     *
+     * @param string $confirmedinfection
+     *
+     * @return Condition
+     */
+    public function setConfirmedinfection($confirmedinfection)
+    {
+        $this->confirmedinfection = $confirmedinfection;
+
+        return $this;
+    }
+
+    /**
+     * Get confirmedinfection
+     *
+     * @return string
+     */
+    public function getConfirmedinfection()
+    {
+        return $this->confirmedinfection;
+    }
+
+    /**
+     * Set vasoactivemedication
+     *
+     * @param string $vasoactivemedication
+     *
+     * @return Condition
+     */
+    public function setVasoactivemedication($vasoactivemedication)
+    {
+        $this->vasoactivemedication = $vasoactivemedication;
+
+        return $this;
+    }
+
+    /**
+     * Get vasoactivemedication
+     *
+     * @return string
+     */
+    public function getVasoactivemedication()
+    {
+        return $this->vasoactivemedication;
+    }
+
+    /**
+     * Set invasivemedication
+     *
+     * @param string $invasivemedication
+     *
+     * @return Condition
+     */
+    public function setInvasivemedication($invasivemedication)
+    {
+        $this->invasivemedication = $invasivemedication;
+
+        return $this;
+    }
+
+    /**
+     * Get invasivemedication
+     *
+     * @return string
+     */
+    public function getInvasivemedication()
+    {
+        return $this->invasivemedication;
+    }
+
+    /**
+     * Set noninvaisvemedication
+     *
+     * @param string $noninvaisvemedication
+     *
+     * @return Condition
+     */
+    public function setNoninvaisvemedication($noninvaisvemedication)
+    {
+        $this->noninvaisvemedication = $noninvaisvemedication;
+
+        return $this;
+    }
+
+    /**
+     * Get noninvaisvemedication
+     *
+     * @return string
+     */
+    public function getNoninvaisvemedication()
+    {
+        return $this->noninvaisvemedication;
+    }
+
+    /**
+     * Set dialysis
+     *
+     * @param string $dialysis
+     *
+     * @return Condition
+     */
+    public function setDialysis($dialysis)
+    {
+        $this->dialysis = $dialysis;
+
+        return $this;
+    }
+
+    /**
+     * Get dialysis
+     *
+     * @return string
+     */
+    public function getDialysis()
+    {
+        return $this->dialysis;
+    }
+
+
+    /**
+     * Get bhtNo
+     *
+     * @return integer
+     */
+    public function getBhtNo()
+    {
+        return $this->bhtNo;
+    }
+
+    /**
+     * Get recordNo
+     *
+     * @return integer
+     */
+    public function getRecordNo()
+    {
+        return $this->recordNo;
+    }
+}

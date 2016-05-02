@@ -18,4 +18,16 @@ class DefaultController extends Controller
             'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..'),
         ]);
     }
+
+    /**
+     * @Route("/", name="default_homepage")
+     */
+    public function directAction(Request $request)
+    {
+        if ($this->securityContext->isGranted('ROLE_NURSE') == true) {
+            return $this->redirect($this->generateUrl('nurse_homepage'));
+         } else {
+            return $this->redirect($this->generateUrl('homepage'));
+        }
+    }
 }

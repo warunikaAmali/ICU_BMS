@@ -30,11 +30,10 @@
     <header>
         <div class="navbar navbar-default navbar-static-top" role="navigation">
             <div class="container">
-                {#<img src="" alt="ICU_BMS!"/>#}
+                <img src="ICU.jpeg" alt="ICU_BMS!"/>
 
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="{{ path('homepage') }}">
-                        BMS </a>
+                    <a class="navbar-brand" href="{{ path('homepage') }}"> ICU_BMS </a>
 
                     <button type="button" class="navbar-toggle"
                             data-toggle="collapse"
@@ -53,20 +52,10 @@
                             <li><a href="{{ path('homepage') }}">
                                     <i class="fa fa-home"></i> Homepage </a></li>
 
-                            <li><a href="">
-                                <i class="fa fa-child"></i> Topic 1 </a></li>
 
-                            <li><a href="">
-                                <i class="fa fa-child"></i> Topic 2 </a></li>
-
-                            {% if app.user and (is_granted('ROLE_ROLE1') or is_granted('ROLE_ROLE2')) %}
+                            {% if app.user and (is_granted('ROLE_ADMIN')) %}
                                 <li><a href="">
-                                        <i class="fa fa-child"></i> Topic 3 </a></li>
-                            {% endif %}
-
-                            {% if app.user and (is_granted('ROLE_ROLE1') or is_granted('ROLE_ROLE2') or is_granted('ROLE_ROLE3')) %}
-                                <li><a href="">
-                                    <i class="fa fa-child"></i> Topic 4 </a></li>
+                                    <i class="fa fa-child"></i> Manage System </a></li>
                             {% endif %}
 
                         {% endblock %}
@@ -77,7 +66,7 @@
                                 <i class="fa fa-sign-out"></i> Sign out </a></li>
                         {% else %}
                             <li><a href="{{ path('security_login_form') }}">
-                                <i class="fa fa-sign-in"></i> Sign in</a></li>
+                                <i class="fa fa-sign-in"></i> Login</a></li>
                         {% endif %}
 
                     </ul>
@@ -92,8 +81,8 @@
         <div class="row">
 
             <div id="main" class="col-sm-9">
-                {% block main %}<h1> BMS </h1>
-                    <h2> Bed Management System</h2>
+                {% block main %}<h1> ICU_BMS </h1>
+                    <h2> ICU Bed Management System</h2>
                 {% endblock %}
             </div>
 
@@ -102,13 +91,15 @@
                     <div class="section about">
                         <div class="well well-lg">
                             {% block side_navigation %}
+                                This web application is designed for ICU Bed Management.
                             {% endblock %}
                         </div>
                     </div>
                     <div class="section about">
                         <div class="well well-lg">
                             {% block about %}
-                                <p>He He He :-) :-) :-) :-) </p>
+                                <p>Only authenticated users are allowed to login!</p>
+                                <p>Please do not break the rules.  </p>
                             {% endblock %}
                         </div>
                     </div>
