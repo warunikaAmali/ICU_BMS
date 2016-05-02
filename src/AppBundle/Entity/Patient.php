@@ -360,4 +360,10 @@ class Patient
 
         return $this;
     }
+    /**
+     * @var \DateTime
+     */
+    private $birthdate;
+
+
 }

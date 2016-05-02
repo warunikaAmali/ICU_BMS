@@ -17,25 +17,30 @@
         <option name="fixed"/>
       </options>
     </field>
+    <field name="gender" type="string" column="gender" length="6" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
     <field name="nic" type="string" column="nic" length="11" nullable="false">
       <options>
         <option name="fixed"/>
       </options>
     </field>
-    <field name="birthDate" type="date" column="birthDate" nullable="false"/>
-    <field name="phonenumber" type="integer" column="phoneNumber" nullable="false">
+    <field name="birthdate" type="date" column="birthDate" nullable="true"/>
+    <field name="phonenumber" type="integer" column="phoneNumber" nullable="true">
       <options>
         <option name="unsigned"/>
       </options>
     </field>
-    <field name="address" type="string" column="address" length="50" nullable="false">
+    <field name="address" type="string" column="address" length="50" nullable="true">
       <options>
         <option name="fixed"/>
       </options>
     </field>
-    <field name="admitteddate" type="date" column="admittedDate" nullable="true"/>
+    <field name="admitteddate" type="date" column="admittedDate" nullable="false"/>
     <field name="dischargeddate" type="date" column="dischargedDate" nullable="true"/>
-    <field name="reasontoadmit" type="string" column="reasonToAdmit" length="15" nullable="true">
+    <field name="reasontoadmit" type="string" column="reasonToAdmit" length="15" nullable="false">
       <options>
         <option name="fixed"/>
       </options>

@@ -330,4 +330,241 @@ class Condition
     {
         return $this->recordNo;
     }
+    /**
+     * @var integer
+     */
+    private $heartrate;
+
+    /**
+     * @var string
+     */
+    private $dialysistype;
+
+    /**
+     * @var integer
+     */
+    private $pulserate;
+
+    /**
+     * @var integer
+     */
+    private $bodytemperature;
+
+    /**
+     * @var string
+     */
+    private $paralysed;
+
+    /**
+     * @var string
+     */
+    private $spontaneousbreathing;
+
+    /**
+     * @var integer
+     */
+    private $bloodpressure;
+
+    /**
+     * @var integer
+     */
+    private $hydrogenstate;
+
+    /**
+     * @var integer
+     */
+    private $recordno;
+
+
+    /**
+     * Set heartrate
+     *
+     * @param integer $heartrate
+     *
+     * @return Condition
+     */
+    public function setHeartrate($heartrate)
+    {
+        $this->heartrate = $heartrate;
+
+        return $this;
+    }
+
+    /**
+     * Get heartrate
+     *
+     * @return integer
+     */
+    public function getHeartrate()
+    {
+        return $this->heartrate;
+    }
+
+    /**
+     * Set dialysistype
+     *
+     * @param string $dialysistype
+     *
+     * @return Condition
+     */
+    public function setDialysistype($dialysistype)
+    {
+        $this->dialysistype = $dialysistype;
+
+        return $this;
+    }
+
+    /**
+     * Get dialysistype
+     *
+     * @return string
+     */
+    public function getDialysistype()
+    {
+        return $this->dialysistype;
+    }
+
+    /**
+     * Set pulserate
+     *
+     * @param integer $pulserate
+     *
+     * @return Condition
+     */
+    public function setPulserate($pulserate)
+    {
+        $this->pulserate = $pulserate;
+
+        return $this;
+    }
+
+    /**
+     * Get pulserate
+     *
+     * @return integer
+     */
+    public function getPulserate()
+    {
+        return $this->pulserate;
+    }
+
+    /**
+     * Set bodytemperature
+     *
+     * @param integer $bodytemperature
+     *
+     * @return Condition
+     */
+    public function setBodytemperature($bodytemperature)
+    {
+        $this->bodytemperature = $bodytemperature;
+
+        return $this;
+    }
+
+    /**
+     * Get bodytemperature
+     *
+     * @return integer
+     */
+    public function getBodytemperature()
+    {
+        return $this->bodytemperature;
+    }
+
+    /**
+     * Set paralysed
+     *
+     * @param string $paralysed
+     *
+     * @return Condition
+     */
+    public function setParalysed($paralysed)
+    {
+        $this->paralysed = $paralysed;
+
+        return $this;
+    }
+
+    /**
+     * Get paralysed
+     *
+     * @return string
+     */
+    public function getParalysed()
+    {
+        return $this->paralysed;
+    }
+
+    /**
+     * Set spontaneousbreathing
+     *
+     * @param string $spontaneousbreathing
+     *
+     * @return Condition
+     */
+    public function setSpontaneousbreathing($spontaneousbreathing)
+    {
+        $this->spontaneousbreathing = $spontaneousbreathing;
+
+        return $this;
+    }
+
+    /**
+     * Get spontaneousbreathing
+     *
+     * @return string
+     */
+    public function getSpontaneousbreathing()
+    {
+        return $this->spontaneousbreathing;
+    }
+
+    /**
+     * Set bloodpressure
+     *
+     * @param integer $bloodpressure
+     *
+     * @return Condition
+     */
+    public function setBloodpressure($bloodpressure)
+    {
+        $this->bloodpressure = $bloodpressure;
+
+        return $this;
+    }
+
+    /**
+     * Get bloodpressure
+     *
+     * @return integer
+     */
+    public function getBloodpressure()
+    {
+        return $this->bloodpressure;
+    }
+
+    /**
+     * Set hydrogenstate
+     *
+     * @param integer $hydrogenstate
+     *
+     * @return Condition
+     */
+    public function setHydrogenstate($hydrogenstate)
+    {
+        $this->hydrogenstate = $hydrogenstate;
+
+        return $this;
+    }
+
+    /**
+     * Get hydrogenstate
+     *
+     * @return integer
+     */
+    public function getHydrogenstate()
+    {
+        return $this->hydrogenstate;
+    }
 }

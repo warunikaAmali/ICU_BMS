@@ -91,7 +91,7 @@ class Patient
      *
      * @ORM\Column(name="BHT_No", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $bhtNo;
 

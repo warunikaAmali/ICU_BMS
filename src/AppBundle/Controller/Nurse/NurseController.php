@@ -28,8 +28,10 @@ class NurseController extends Controller
     public function patientAddAction(Request $request)
     {
         $patient = new Patient();
+
         $em = $this->getDoctrine()->getManager();
         $connection = $em->getConnection();
+
         $form = $this->createFormBuilder($patient)
             ->add('bhtNo', IntegerType::class)
             ->add('bedNo', IntegerType::class)
@@ -72,10 +74,21 @@ class NurseController extends Controller
     public function patientRecordAction(Request $request)
     {
         $condition = new Condition();
+
         $em = $this->getDoctrine()->getManager();
         $connection = $em->getConnection();
+
+        $query = "SELECT max(recordNo) FROM condition";
+        $statement = $connection->prepare($query);
+        $statement->execute();
+        $result = $statement->fetchAll();
+
+        foreach($result as $res){
+            $lastRecordNo=$res;
+        }
+
         $form = $this->createFormBuilder($condition)
-            ->add('recordNo', IntegerType::class)
+            //->add('recordNo', IntegerType::class)
             ->add('bhtNo', IntegerType::class)
             ->add('date',  DateType::class,
                 ['input'  => 'datetime', 'widget' => 'choice', 'years' => range(2016,2050)])
@@ -88,31 +101,38 @@ class NurseController extends Controller
             ->add('invasiveMedication', ChoiceType::class, array('choices' => array('Yes' => 'Yes', 'No'=>'No')))
             ->add('nonInvaisveMedication', ChoiceType::class, array('choices' => array('Yes' => 'Yes', 'No'=>'No')))
             ->add('dialysis', ChoiceType::class, array('choices' => array('Yes' => 'Yes', 'No'=>'No')))
-            /*  ->add('dialysisType', ChoiceType::class, array('choices' => array('Haemo' => 'Haemo', 'Peritonea'=>'Peritonea')))
-              ->add('spontaneousBreathing', ChoiceType::class, array('choices' => array('Yes' => 'Yes', 'No'=>'No')))
-              ->add('paralysed', ChoiceType::class, array('choices' => array('Yes' => 'Yes', 'No'=>'No')))
-              ->add('bodyTemperature', IntegerType::class)
-              ->add('hydrogenState', IntegerType::class)
-              ->add('bloodPressure', IntegerType::class)
-              ->add('pulseRate', IntegerType::class)
-              ->add('heartRate', IntegerType::class)*/
-            ->add('save', SubmitType::class, array('label' => 'Add new Patient'))
+            ->add('dialysisType', ChoiceType::class, array('choices' => array('Haemo' => 'Haemo', 'Peritonea'=>'Peritonea')))
+            ->add('spontaneousBreathing', ChoiceType::class, array('choices' => array('Yes' => 'Yes', 'No'=>'No')))
+            ->add('paralysed', ChoiceType::class, array('choices' => array('Yes' => 'Yes', 'No'=>'No')))
+            ->add('bodyTemperature', IntegerType::class)
+            ->add('hydrogenState', IntegerType::class)
+            ->add('bloodPressure', IntegerType::class)
+            ->add('pulseRate', IntegerType::class)
+            ->add('heartRate', IntegerType::class)
+            ->add('save', SubmitType::class, array('label' => 'Add new Record'))
             ->getForm();
+
         $form->handleRequest($request);
+
         if($form->isValid()){
             $query = "INSERT INTO condition ";
-//            $query_student .= "(id, first_name, second_name, faculty, department, gender, ";
-//            $query_student .= "birthday, contact_number, e_mail, address)";
+            $query .= "(BHT_No, date, time, acuteRenalFailure, confirmedInfection, ";
+            $query .= "vasoactiveMedication, invasiveMedication, nonInvaisveMedication, dialysis, ";
+            $query .= "dialysisType, heartRate, pulseRate, bodyTemperature, paralysed, spontaneousBreathing, ";
+            $query .= "bloodPressure, hydrogenState)";
             $query .= "VALUES ";
-            $query .= "('" . $condition->getRecordNo() . "', '" . $condition->getBhtNo() . "', '" . $condition->getDate(). "', ";
+            $query .= "('" . $condition->getBhtNo() . "', '" . $condition->getDate(). "', ";
             $query .= "'" . $condition->getTime() . "', '" . $condition->getAcuterenalfailure() . "', '" . $condition->getConfirmedinfection() . "', ";
             $query .= "'" . $condition->getVasoactivemedication() . "', '" . $condition->getInvasivemedication() . "', ";
-            $query .= "'" . $condition->getNoninvaisvemedication() . "', '" . $condition->getDialysis() . "' )";
+            $query .= "'" . $condition->getNoninvaisvemedication() . "', '" . $condition->getDialysis() . "', ";
+            $query .= "'" . $condition->getDialysistype() . "', '" . $condition->getHeartrate() . "', '" . $condition->getPulserate() . "', ";
+            $query .= "'" . $condition->getBodytemperature() . "', '" . $condition->getParalysed() . "', ";
+            $query .= "'" . $condition->getSpontaneousbreathing() . "', '" . $condition->getBloodpressure() . "', '" . $condition->getHydrogenstate() ."' )";
             $statement = $connection->prepare($query);
             $statement->execute();
             return $this->render('nurse/addRecord.html.twig');
         }
-        return $this->render('nurse/addRecord.html.twig', array('condition' => $condition,
+        return $this->render('nurse/addRecord.html.twig', array('condition' => $condition, 'recNo'=> $lastRecordNo+1,
             'form' => $form->createView(),
         ));
     }

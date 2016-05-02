@@ -19,6 +19,9 @@
 
     <center><h4>Add a new Record</h4></center>
     {% if form is defined %}
+        <div>
+            Record No :{{ recNo }}
+        </div>
         {% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
         <div class="col-sm-11">
             <div class="well">
