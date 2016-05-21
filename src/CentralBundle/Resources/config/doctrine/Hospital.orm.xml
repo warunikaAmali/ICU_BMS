@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-  <entity name="CentralBundle\Entity\Bed" table="bed">
-    <id name="bedno" type="integer" column="bedNo">
+  <entity name="CentralBundle\Entity\Hospital" table="hospital">
+    <id name="id" type="integer" column="id">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="status" type="string" column="status" length="8" nullable="false">
+    <field name="name" type="string" column="name" length="50" nullable="false">
       <options>
         <option name="fixed"/>
       </options>
     </field>
-    <field name="oxygensupply" type="string" column="oxygenSupply" length="15" nullable="false">
+    <field name="vacancies" type="integer" column="vacancies" nullable="false">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="oxygensupply" type="string" column="oxygenSupply" length="3" nullable="false">
       <options>
         <option name="fixed"/>
       </options>
     </field>
-    <field name="artificialrespiration" type="string" column="artificialRespiration" length="15" nullable="false">
+    <field name="artificialrespiraton" type="string" column="artificialRespiraton" length="3" nullable="false">
       <options>
         <option name="fixed"/>
       </options>
     </field>
-    <field name="cardiacmonitor" type="string" column="cardiacMonitor" length="15" nullable="false">
+    <field name="cardiacmonitor" type="string" column="cardiacMonitor" length="3" nullable="false">
       <options>
         <option name="fixed"/>
       </options>

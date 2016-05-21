@@ -73,7 +73,7 @@ doctrine:
                   central_icu:
                       connection: central_icu
                       mappings:
-                          AppBundle:  ~
+#                          AppBundle:  ~
                           CentralBundle: ~
 
 
