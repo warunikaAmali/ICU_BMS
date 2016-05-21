@@ -4,8 +4,13 @@
     <div class="list-group">
         {% if app.user and is_granted('ROLE_NURSE') %}
             <a href=" {{ path('add_patients') }} " class="list-group-item">Add Patients</a>
-            <a href=" {{ path('addRecord') }} " class="list-group-item">Update Patient Details</a>
+            <a href=" {{ path('addRecord') }} " class="list-group-item">Record Patient Details</a>
             <a href=" {{ path('view_patients') }} " class="list-group-item">View Patient Details</a>
+
+        {% endif %}
+        {% if app.user and is_granted('ROLE_DOCTOR') %}
+            <a href=" {{ path('view_patients') }} " class="list-group-item">View Patient Details</a>
+            <a href=" {{ path('discharge_patients') }} " class="list-group-item">Discharge Patients</a>
 
         {% endif %}
         <a href="" class="list-group-item">Change Password</a>

@@ -8,6 +8,11 @@
             <a href=" {{ path('view_patients') }} " class="list-group-item">View Patient Details</a>
 
         {% endif %}
+        {% if app.user and is_granted('ROLE_DOCTOR') %}
+            <a href=" {{ path('view_patients') }} " class="list-group-item">View Patient Details</a>
+            <a href=" {{ path('discharge_patients') }} " class="list-group-item">Discharge Patients</a>
+
+        {% endif %}
         <a href="" class="list-group-item">Change Password</a>
 
     </div>
@@ -22,7 +27,7 @@
 
 {% block main %}
 
-    <center><h4>Add a new Patient</h4></center>
+    <center><h4>Add a new Bed</h4></center>
     {% if form is defined %}
         {% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
         <div class="col-sm-11">

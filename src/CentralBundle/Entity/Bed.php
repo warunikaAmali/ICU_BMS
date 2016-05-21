@@ -1,54 +1,36 @@
 <?php
 
-namespace AppBundle\Entity;
-
-use Doctrine\ORM\Mapping as ORM;
+namespace CentralBundle\Entity;
 
 /**
  * Bed
- *
- * @ORM\Table(name="bed")
- * @ORM\Entity
  */
 class Bed
 {
     /**
      * @var string
-     *
-     * @ORM\Column(name="status", type="string", length=8, nullable=false)
      */
     private $status;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="oxygenSupply", type="string", length=15, nullable=false)
      */
-    private $oxygenSupply;
+    private $oxygensupply;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="artificialRespiration", type="string", length=15, nullable=false)
      */
     private $artificialrespiration;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="cardiacMonitor", type="string", length=15, nullable=false)
      */
     private $cardiacmonitor;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="bedNo", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $bedno;
-
 
 
     /**
@@ -82,9 +64,9 @@ class Bed
      *
      * @return Bed
      */
-    public function setOxygenSupply($oxygensupply)
+    public function setOxygensupply($oxygensupply)
     {
-        $this->oxygenSupply = $oxygensupply;
+        $this->oxygensupply = $oxygensupply;
 
         return $this;
     }
@@ -94,9 +76,9 @@ class Bed
      *
      * @return string
      */
-    public function getOxygenSupply()
+    public function getOxygensupply()
     {
-        return $this->oxygenSupply;
+        return $this->oxygensupply;
     }
 
     /**
@@ -156,34 +138,5 @@ class Bed
     {
         return $this->bedno;
     }
-    /**
-     * @var string
-     */
-    private $oxygensypply;
-
-
-
-    /**
-     * Set oxygensypply
-     *
-     * @param string $oxygensypply
-     *
-     * @return Bed
-     */
-    public function setOxygensypply($oxygensypply)
-    {
-        $this->oxygensypply = $oxygensypply;
-
-        return $this;
-    }
-
-    /**
-     * Get oxygensypply
-     *
-     * @return string
-     */
-    public function getOxygensypply()
-    {
-        return $this->oxygensypply;
-    }
 }
+

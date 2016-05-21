@@ -6,7 +6,6 @@
             <a href=" {{ path('add_patients') }} " class="list-group-item">Add Patients</a>
             <a href=" {{ path('addRecord') }} " class="list-group-item">Record Patient Details</a>
             <a href=" {{ path('view_patients') }} " class="list-group-item">View Patient Details</a>
-
         {% endif %}
         {% if app.user and is_granted('ROLE_DOCTOR') %}
             <a href=" {{ path('view_patients') }} " class="list-group-item">View Patient Details</a>
@@ -27,7 +26,7 @@
 
 {% block main %}
 
-    <center><h4>Add a new Patient</h4></center>
+    <center><h4>Discharge a Patient</h4></center>
     {% if form is defined %}
         {% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
         <div class="col-sm-11">
@@ -40,9 +39,8 @@
     {% else %}
         <div class="row">
             <div class="well">
-               <h4>New Patient successfully added to the system</h4> <br>
-                <h4>Record the initial condition of the patient</h4>
-                <a href=" {{ path('addRecord') }}" class="list-group-item">Record Condition</a>
+                <h4>Patient discharged by the system</h4> <br>
+
             </div>
 
         </div>

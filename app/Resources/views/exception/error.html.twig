@@ -1,4 +1,5 @@
-{% extends 'base.html.twig' %}
+{#
+&#123;&#35;{% extends 'base.html.twig' %}&#35;&#125;
 
 {% block side_navigation %}
     <div class="list-group">
@@ -6,7 +7,7 @@
             <a href=" {{ path('add_patients') }} " class="list-group-item">Add Patients</a>
             <a href=" {{ path('addRecord') }} " class="list-group-item">Record Patient Details</a>
             <a href=" {{ path('view_patients') }} " class="list-group-item">View Patient Details</a>
-
+            <a href=" {{ path('discharge_patients') }} " class="list-group-item">Discharge Patients</a>
         {% endif %}
         {% if app.user and is_granted('ROLE_DOCTOR') %}
             <a href=" {{ path('view_patients') }} " class="list-group-item">View Patient Details</a>
@@ -26,26 +27,10 @@
 {% endblock %}
 
 {% block main %}
-
-    <center><h4>Add a new Patient</h4></center>
-    {% if form is defined %}
-        {% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
-        <div class="col-sm-11">
-            <div class="well">
-                {{ form_start(form) }}
-                {{ form_widget(form) }}
-                {{ form_end(form) }}
-            </div>
+    <div class='error'>
+        <div class="message">
+            <h2>Application Error</h2>
+            <p>Oops! {{ status_text }}</p>
         </div>
-    {% else %}
-        <div class="row">
-            <div class="well">
-               <h4>New Patient successfully added to the system</h4> <br>
-                <h4>Record the initial condition of the patient</h4>
-                <a href=" {{ path('addRecord') }}" class="list-group-item">Record Condition</a>
-            </div>
-
-        </div>
-    {% endif %}
-
-{% endblock %}
+    </div>
+&#123;&#35;{% endblock %}&#35;&#125;#}

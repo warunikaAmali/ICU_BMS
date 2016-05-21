@@ -4,8 +4,14 @@
     <div class="list-group">
         {% if app.user and is_granted('ROLE_NURSE') %}
             <a href=" {{ path('add_patients') }} " class="list-group-item">Add Patients</a>
-            <a href=" {{ path('addRecord') }} " class="list-group-item">Update Patient Details</a>
+            <a href=" {{ path('addRecord') }} " class="list-group-item">Record Patient Details</a>
             <a href=" {{ path('view_patients') }} " class="list-group-item">View Patient Details</a>
+
+        {% endif %}
+        {% if app.user and is_granted('ROLE_DOCTOR') %}
+            <a href=" {{ path('view_patients') }} " class="list-group-item">View Patient Details</a>
+            <a href=" {{ path('discharge_patients') }} " class="list-group-item">Discharge Patients</a>
+
         {% endif %}
         <a href="" class="list-group-item">Change Password</a>
 
@@ -35,9 +41,7 @@
     {% else %}
         <div class="row">
             <div class="well">
-                <h4>New Patient successfully added to the system</h4> <br>
-                <h4>Record the initial condition of the patient</h4>
-                <a href=" {{ path('update_patients', {'id':patient.bhtNo})  }}" class="list-group-item">Record Condition</a>
+                <h4>New Record successfully added to the system</h4> <br>
             </div>
 
         </div>

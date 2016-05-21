@@ -37,6 +37,8 @@ class SecurityController extends Controller
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_NURSE')) {
             return $this->redirect($this->generateUrl('nurse_homepage'));
+        }else if ($this->get('security.authorization_checker')->isGranted('ROLE_DOCTOR')) {
+            return $this->redirect($this->generateUrl('doctor_homepage'));
         } else {
             return $this->redirect($this->generateUrl('homepage'));
         }

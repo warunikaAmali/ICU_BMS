@@ -162,4 +162,34 @@ class Bed
     private $oxygensypply;
 
 
+
+    /**
+     * Set oxygensypply
+     *
+     * @param string $oxygensypply
+     *
+     * @return Bed
+     */
+    public function setOxygensypply($oxygensypply)
+    {
+        $this->oxygensypply = $oxygensypply;
+
+        return $this;
+    }
+
+    /**
+     * Get oxygensypply
+     *
+     * @return string
+     */
+    public function getOxygensypply()
+    {
+        return $this->oxygensypply;
+    }
+    /**
+     * @var string
+     */
+    private $oxygensupply;
+
+
 }

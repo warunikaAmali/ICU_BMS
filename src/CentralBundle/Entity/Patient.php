@@ -1,102 +1,66 @@
 <?php
 
-namespace AppBundle\Entity;
-
-use Doctrine\ORM\Mapping as ORM;
-//use Symfony\Component\Validator\Constraints as Assert;
+namespace CentralBundle\Entity;
 
 /**
  * Patient
- *
- * @ORM\Table(name="patient", indexes={@ORM\Index(name="FOREIGN", columns={"bedNo"})})
- * @ORM\Entity
  */
 class Patient
 {
     /**
      * @var integer
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Bed")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="bedNo", referencedColumnName="bedNo")
-     * })
      */
     private $bedno;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=30, nullable=true)
      */
     private $name;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="gender", type="string", length=6, nullable=true)
      */
     private $gender;
 
-
     /**
      * @var string
-     *
-     * @ORM\Column(name="nic", type="string", length=11, nullable=false)
      */
     private $nic;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="birthDate", type="date", nullable=false)
      */
-    private $birthDate;
+    private $birthdate;
 
     /**
      * @var integer
-     *
-     *
-     * @ORM\Column(name="phoneNumber", type="integer", length=10, nullable=false)
      */
     private $phonenumber;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="address", type="string", length=50, nullable=false)
      */
     private $address;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="admittedDate", type="date", nullable=true)
      */
     private $admitteddate;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="dischargedDate", type="date", nullable=true)
      */
     private $dischargeddate;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="reasonToAdmit", type="string", length=15, nullable=true)
      */
     private $reasontoadmit;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="BHT_No", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $bhtNo;
-
 
 
     /**
@@ -196,27 +160,27 @@ class Patient
     }
 
     /**
-     * Set birthDate
+     * Set birthdate
      *
-     * @param \DateTime $birthDate
+     * @param \DateTime $birthdate
      *
      * @return Patient
      */
-    public function setBirthDate($birthDate)
+    public function setBirthdate($birthdate)
     {
-        $this->birthDate = $birthDate;
+        $this->birthdate = $birthdate;
 
         return $this;
     }
 
     /**
-     * Get birthDate
+     * Get birthdate
      *
      * @return \DateTime
      */
-    public function getBirthDate()
+    public function getBirthdate()
     {
-        return $this->birthDate;
+        return $this->birthdate;
     }
 
     /**
@@ -348,24 +312,5 @@ class Patient
     {
         return $this->bhtNo;
     }
-
-    /**
-     * Set bhtNo
-     *
-     * @param integer $bhtNo
-     *
-     * @return Patient
-     */
-    public function setBhtNo($bhtNo)
-    {
-        $this->bhtNo = $bhtNo;
-
-        return $this;
-    }
-    /**
-     * @var \DateTime
-     */
-    private $birthdate;
-
-
 }
+
