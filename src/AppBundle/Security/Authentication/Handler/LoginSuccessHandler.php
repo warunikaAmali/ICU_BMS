@@ -31,9 +31,12 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
         if($this->security->isGranted('ROLE_NURSE')) {
             $url = 'nurse_homepage';
         }
-//        elseif($this->security->isGranted('ROLE_')) {
-            $url = 'admin_dashboard';
-//        }
+        elseif($this->security->isGranted('ROLE_DOCTOR')) {
+            $url = 'doctor_homepage';
+        }
+        else{
+            $url='homepage';
+        }
         $response = new RedirectResponse($this->router->generate($url));
 
         return $response;

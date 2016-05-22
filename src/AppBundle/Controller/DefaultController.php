@@ -26,7 +26,10 @@ class DefaultController extends Controller
     {
         if ($this->securityContext->isGranted('ROLE_NURSE') == true) {
             return $this->redirect($this->generateUrl('nurse_homepage'));
-         } else {
+         }
+        else if ($this->securityContext->isGranted('ROLE_DOCTOR') == true) {
+            return $this->redirect($this->generateUrl('doctor_homepage'));
+        } else {
             return $this->redirect($this->generateUrl('homepage'));
         }
     }
