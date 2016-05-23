@@ -73,14 +73,14 @@ class NurseController extends Controller
         $form->handleRequest($request);
         if($form->isValid()){
 
-            $query = "SELECT name FROM patient where BHT_No = $patient->getBhtNo()";
+            $query = "SELECT name FROM patient where BHT_No = $this->$patient->getPatientId()";
             $statement = $connection->prepare($query);
             $statement->execute();
             $result = $statement->fetchAll();
 
             if($result==null){
                 $query_patient = "INSERT INTO patient ";
-                $query_patient .= "(BHT_No, bedNo, name, gender, nic, birthDate, ";
+                $query_patient .= "(patient_id, bedNo, name, gender, nic, birthDate, ";
                 $query_patient .= "phoneNumber, address, admittedDate, reasonToAdmit)";
                 $query_patient .= "VALUES ";
                 $query_patient .= "(" . $patient->getBhtNo() . ", " . $patient->getBedno() . ", '" . $patient->getName() . "', ";
