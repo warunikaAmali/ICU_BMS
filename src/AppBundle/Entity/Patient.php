@@ -3,26 +3,15 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-//use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Patient
  *
- * @ORM\Table(name="patient", indexes={@ORM\Index(name="FOREIGN", columns={"bedNo"})})
+ * @ORM\Table(name="patient", indexes={@ORM\Index(name="FOREIGN", columns={"bedNo"}), @ORM\Index(name="hospital_id", columns={"hospital_id"})})
  * @ORM\Entity
  */
 class Patient
 {
-    /**
-     * @var integer
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Bed")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="bedNo", referencedColumnName="bedNo")
-     * })
-     */
-    private $bedno;
-
     /**
      * @var string
      *
@@ -33,10 +22,9 @@ class Patient
     /**
      * @var string
      *
-     * @ORM\Column(name="gender", type="string", length=6, nullable=true)
+     * @ORM\Column(name="gender", type="string", length=6, nullable=false)
      */
     private $gender;
-
 
     /**
      * @var string
@@ -48,29 +36,28 @@ class Patient
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="birthDate", type="date", nullable=false)
+     * @ORM\Column(name="birthDate", type="date", nullable=true)
      */
-    private $birthDate;
+    private $birthdate;
 
     /**
      * @var integer
      *
-     *
-     * @ORM\Column(name="phoneNumber", type="integer", length=10, nullable=false)
+     * @ORM\Column(name="phoneNumber", type="integer", nullable=true)
      */
     private $phonenumber;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="address", type="string", length=50, nullable=false)
+     * @ORM\Column(name="address", type="string", length=50, nullable=true)
      */
     private $address;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="admittedDate", type="date", nullable=true)
+     * @ORM\Column(name="admittedDate", type="date", nullable=false)
      */
     private $admitteddate;
 
@@ -84,44 +71,40 @@ class Patient
     /**
      * @var string
      *
-     * @ORM\Column(name="reasonToAdmit", type="string", length=15, nullable=true)
+     * @ORM\Column(name="reasonToAdmit", type="string", length=15, nullable=false)
      */
     private $reasontoadmit;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="BHT_No", type="integer")
+     * @ORM\Column(name="patient_id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $bhtNo;
-
-
+    private $patientId;
 
     /**
-     * Set bedno
+     * @var \AppBundle\Entity\Bed
      *
-     * @param integer $bedno
-     *
-     * @return Patient
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Bed")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="bedNo", referencedColumnName="bedNo")
+     * })
      */
-    public function setBedno($bedno)
-    {
-        $this->bedno = $bedno;
-
-        return $this;
-    }
+    private $bedno;
 
     /**
-     * Get bedno
+     * @var \AppBundle\Entity\Icu
      *
-     * @return integer
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Icu")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="hospital_id", referencedColumnName="id")
+     * })
      */
-    public function getBedno()
-    {
-        return $this->bedno;
-    }
+    private $hospital;
+
+
 
     /**
      * Set name
@@ -196,27 +179,27 @@ class Patient
     }
 
     /**
-     * Set birthDate
+     * Set birthdate
      *
-     * @param \DateTime $birthDate
+     * @param \DateTime $birthdate
      *
      * @return Patient
      */
-    public function setBirthDate($birthDate)
+    public function setBirthdate($birthdate)
     {
-        $this->birthDate = $birthDate;
+        $this->birthdate = $birthdate;
 
         return $this;
     }
 
     /**
-     * Get birthDate
+     * Get birthdate
      *
      * @return \DateTime
      */
-    public function getBirthDate()
+    public function getBirthdate()
     {
-        return $this->birthDate;
+        return $this->birthdate;
     }
 
     /**
@@ -340,32 +323,60 @@ class Patient
     }
 
     /**
-     * Get bhtNo
+     * Get patientId
      *
      * @return integer
      */
-    public function getBhtNo()
+    public function getPatientId()
     {
-        return $this->bhtNo;
+        return $this->patientId;
     }
 
     /**
-     * Set bhtNo
+     * Set bedno
      *
-     * @param integer $bhtNo
+     * @param \AppBundle\Entity\Bed $bedno
      *
      * @return Patient
      */
-    public function setBhtNo($bhtNo)
+    public function setBedno(\AppBundle\Entity\Bed $bedno = null)
     {
-        $this->bhtNo = $bhtNo;
+        $this->bedno = $bedno;
 
         return $this;
     }
+
     /**
-     * @var \DateTime
+     * Get bedno
+     *
+     * @return \AppBundle\Entity\Bed
      */
-    private $birthdate;
+    public function getBedno()
+    {
+        return $this->bedno;
+    }
 
+    /**
+     * Set hospital
+     *
+     * @param \AppBundle\Entity\Icu $hospital
+     *
+     * @return Patient
+     */
+    public function setHospital(\AppBundle\Entity\Icu $hospital = null)
+    {
+        $this->hospital = $hospital;
 
+        return $this;
+    }
+
+    /**
+     * Get hospital
+     *
+     * @return \AppBundle\Entity\Icu
+     */
+    public function getHospital()
+    {
+        return $this->hospital;
+    }
 }

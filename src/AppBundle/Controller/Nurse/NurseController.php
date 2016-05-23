@@ -40,8 +40,20 @@ class NurseController extends Controller
         $em = $this->getDoctrine()->getManager();
         $connection = $em->getConnection();
 
+        $query = "SELECT name FROM icu";
+        $statement = $connection->prepare($query);
+        $statement->execute();
+        $result = $statement->fetchAll();
+
+        $icu_list = array();
+
+        foreach($result as $res){
+            $icu_list[$res['name']] = $res['name'];
+        }
+
+
         $form = $this->createFormBuilder($patient)
-            ->add('bhtNo', IntegerType::class)
+            ->add('IcuName',  ChoiceType::class, ['choices' => $icu_list])
             ->add('bedNo', IntegerType::class)
             ->add('name', TextType::class, ['required' => false])
             ->add('gender', ChoiceType::class, array('choices' => array('Male' => 'Male', 'Female'=>'Female')))

@@ -2,120 +2,141 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * Records
+ *
+ * @ORM\Table(name="records", indexes={@ORM\Index(name="patient_id", columns={"patient_id"})})
+ * @ORM\Entity
  */
 class Records
 {
     /**
-     * @var integer
-     */
-    private $bhtNo;
-
-    /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="datetime", nullable=false)
      */
     private $date = 'CURRENT_TIMESTAMP';
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="acuteRenalFailure", type="string", length=3, nullable=false)
      */
     private $acuterenalfailure;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="confirmedInfection", type="string", length=3, nullable=false)
      */
     private $confirmedinfection;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="vasoactiveMedication", type="string", length=3, nullable=false)
      */
     private $vasoactivemedication;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="invasiveMedication", type="string", length=3, nullable=false)
      */
     private $invasivemedication;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="nonInvasiveMedication", type="string", length=3, nullable=false)
      */
     private $noninvasivemedication;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="dialysis", type="string", length=3, nullable=false)
      */
     private $dialysis;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="dialysisType", type="string", length=12, nullable=false)
      */
     private $dialysistype;
 
     /**
      * @var integer
+     *
+     * @ORM\Column(name="heartRate", type="integer", nullable=false)
      */
     private $heartrate;
 
     /**
      * @var integer
+     *
+     * @ORM\Column(name="pulseRate", type="integer", nullable=false)
      */
     private $pulserate;
 
     /**
      * @var integer
+     *
+     * @ORM\Column(name="bodyTemperature", type="integer", nullable=false)
      */
     private $bodytemperature;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="paralysed", type="string", length=3, nullable=false)
      */
     private $paralysed;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="spontaneousBreathing", type="string", length=3, nullable=false)
      */
     private $spontaneousbreathing;
 
     /**
      * @var integer
+     *
+     * @ORM\Column(name="bloodPressure", type="integer", nullable=false)
      */
     private $bloodpressure;
 
     /**
      * @var integer
+     *
+     * @ORM\Column(name="hydrogenState", type="integer", nullable=false)
      */
     private $hydrogenstate;
 
     /**
      * @var integer
+     *
+     * @ORM\Column(name="recNo", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $recno;
 
-
     /**
-     * Set bhtNo
+     * @var \AppBundle\Entity\Patient
      *
-     * @param integer $bhtNo
-     *
-     * @return Records
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Patient")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="patient_id", referencedColumnName="patient_id")
+     * })
      */
-    public function setBhtNo($bhtNo)
-    {
-        $this->bhtNo = $bhtNo;
+    private $patient;
 
-        return $this;
-    }
 
-    /**
-     * Get bhtNo
-     *
-     * @return integer
-     */
-    public function getBhtNo()
-    {
-        return $this->bhtNo;
-    }
 
     /**
      * Set date
@@ -460,7 +481,7 @@ class Records
      *
      * @return Records
      */
-    public function sethydrogenState($hydrogenstate)
+    public function setHydrogenstate($hydrogenstate)
     {
         $this->hydrogenstate = $hydrogenstate;
 
@@ -472,7 +493,7 @@ class Records
      *
      * @return integer
      */
-    public function gethydrogenState()
+    public function getHydrogenstate()
     {
         return $this->hydrogenstate;
     }
@@ -486,5 +507,28 @@ class Records
     {
         return $this->recno;
     }
-}
 
+    /**
+     * Set patient
+     *
+     * @param \AppBundle\Entity\Patient $patient
+     *
+     * @return Records
+     */
+    public function setPatient(\AppBundle\Entity\Patient $patient = null)
+    {
+        $this->patient = $patient;
+
+        return $this;
+    }
+
+    /**
+     * Get patient
+     *
+     * @return \AppBundle\Entity\Patient
+     */
+    public function getPatient()
+    {
+        return $this->patient;
+    }
+}

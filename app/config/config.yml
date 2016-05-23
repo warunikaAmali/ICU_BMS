@@ -2,7 +2,6 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
-    - { resource: "@CentralBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -41,7 +40,6 @@ twig:
 # Doctrine Configuration
 doctrine:
     dbal:
-        default_connection: icu_bms
         connections:
           icu_bms:
             driver:   pdo_mysql
@@ -51,30 +49,14 @@ doctrine:
             user:     "%database_user%"
             password: "%database_password%"
             charset:  UTF8
-          central_icu:
-            driver:   pdo_mysql
-            host:     "%database_host%"
-            port:     "%database_port%"
-            dbname:   "%database_name2%"
-            user:     "%database_user%"
-            password: "%database_password%"
-            charset:  UTF8
-    orm:
-#        auto_generate_proxy_classes: "%kernel.debug%"
-#        naming_strategy: doctrine.orm.naming_strategy.underscore
-#        auto_mapping: true
-              default_entity_manager: icu_bms
-              entity_managers:
-                  icu_bms:
-                      connection: icu_bms
-                      mappings:
-                          AppBundle:  ~
 
-                  central_icu:
-                      connection: central_icu
-                      mappings:
-#                          AppBundle:  ~
-                          CentralBundle: ~
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: true
+
+
+
 
 
 # Swiftmailer Configuration

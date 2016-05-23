@@ -5,33 +5,33 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Doctor
+ * Disance
  *
- * @ORM\Table(name="doctor")
+ * @ORM\Table(name="disance")
  * @ORM\Entity
  */
-class Doctor
+class Disance
 {
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=30, nullable=false)
+     * @ORM\Column(name="fromH", type="string", length=50, nullable=false)
      */
-    private $name;
+    private $fromh;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="password", type="string", length=200, nullable=false)
+     * @ORM\Column(name="toH", type="string", length=50, nullable=false)
      */
-    private $password;
+    private $toh;
 
     /**
-     * @var string
+     * @var integer
      *
-     * @ORM\Column(name="speciallity", type="string", length=30, nullable=false)
+     * @ORM\Column(name="distance", type="integer", nullable=false)
      */
-    private $speciallity;
+    private $distance;
 
     /**
      * @var integer

@@ -29,13 +29,6 @@ class Icu
     /**
      * @var integer
      *
-     * @ORM\Column(name="distance", type="integer", nullable=false)
-     */
-    private $distance;
-
-    /**
-     * @var integer
-     *
      * @ORM\Column(name="phoneNumber", type="integer", nullable=false)
      */
     private $phonenumber;
@@ -104,30 +97,6 @@ class Icu
     public function getAddress()
     {
         return $this->address;
-    }
-
-    /**
-     * Set distance
-     *
-     * @param integer $distance
-     *
-     * @return Icu
-     */
-    public function setDistance($distance)
-    {
-        $this->distance = $distance;
-
-        return $this;
-    }
-
-    /**
-     * Get distance
-     *
-     * @return integer
-     */
-    public function getDistance()
-    {
-        return $this->distance;
     }
 
     /**

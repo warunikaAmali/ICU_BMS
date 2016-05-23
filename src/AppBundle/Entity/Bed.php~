@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Bed
  *
- * @ORM\Table(name="bed")
+ * @ORM\Table(name="bed", indexes={@ORM\Index(name="hospital_id", columns={"hospital_id"}), @ORM\Index(name="hospital_id_2", columns={"hospital_id"})})
  * @ORM\Entity
  */
 class Bed
@@ -24,7 +24,7 @@ class Bed
      *
      * @ORM\Column(name="oxygenSupply", type="string", length=15, nullable=false)
      */
-    private $oxygenSupply;
+    private $oxygensupply;
 
     /**
      * @var string
@@ -49,141 +49,16 @@ class Bed
      */
     private $bedno;
 
-
-
     /**
-     * Set status
+     * @var \AppBundle\Entity\Icu
      *
-     * @param string $status
-     *
-     * @return Bed
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Icu")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="hospital_id", referencedColumnName="id")
+     * })
      */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return string
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
-     * Set oxygensupply
-     *
-     * @param string $oxygensupply
-     *
-     * @return Bed
-     */
-    public function setOxygenSupply($oxygensupply)
-    {
-        $this->oxygenSupply = $oxygensupply;
-
-        return $this;
-    }
-
-    /**
-     * Get oxygensupply
-     *
-     * @return string
-     */
-    public function getOxygenSupply()
-    {
-        return $this->oxygenSupply;
-    }
-
-    /**
-     * Set artificialrespiration
-     *
-     * @param string $artificialrespiration
-     *
-     * @return Bed
-     */
-    public function setArtificialrespiration($artificialrespiration)
-    {
-        $this->artificialrespiration = $artificialrespiration;
-
-        return $this;
-    }
-
-    /**
-     * Get artificialrespiration
-     *
-     * @return string
-     */
-    public function getArtificialrespiration()
-    {
-        return $this->artificialrespiration;
-    }
-
-    /**
-     * Set cardiacmonitor
-     *
-     * @param string $cardiacmonitor
-     *
-     * @return Bed
-     */
-    public function setCardiacmonitor($cardiacmonitor)
-    {
-        $this->cardiacmonitor = $cardiacmonitor;
-
-        return $this;
-    }
-
-    /**
-     * Get cardiacmonitor
-     *
-     * @return string
-     */
-    public function getCardiacmonitor()
-    {
-        return $this->cardiacmonitor;
-    }
-
-    /**
-     * Get bedno
-     *
-     * @return integer
-     */
-    public function getBedno()
-    {
-        return $this->bedno;
-    }
-    /**
-     * @var string
-     */
-    private $oxygensypply;
+    private $hospital;
 
 
-
-    /**
-     * Set oxygensypply
-     *
-     * @param string $oxygensypply
-     *
-     * @return Bed
-     */
-    public function setOxygensypply($oxygensypply)
-    {
-        $this->oxygensypply = $oxygensypply;
-
-        return $this;
-    }
-
-    /**
-     * Get oxygensypply
-     *
-     * @return string
-     */
-    public function getOxygensypply()
-    {
-        return $this->oxygensypply;
-    }
 }
+

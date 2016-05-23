@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * User
@@ -11,26 +10,26 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(name="user")
  * @ORM\Entity
  */
-class User implements UserInterface
+class User
 {
     /**
      * @var string
      *
-     * @ORM\Column(name="password", type="string", length=150, nullable=false)
+     * @ORM\Column(name="password", type="string", length=100, nullable=true)
      */
     private $password;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="role", type="string", length=20, nullable=false)
+     * @ORM\Column(name="role", type="string", length=20, nullable=true)
      */
     private $role;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="username", type="string", length=10)
+     * @ORM\Column(name="username", type="string", length=20)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -86,23 +85,20 @@ class User implements UserInterface
         return $this->role;
     }
 
+
     /**
-     * Returns the roles or permissions granted to the user for security.
+     * Set username
+     *
+     * @param string $username
+     *
+     * @return User
      */
-    public function getRoles()
+    public function setUsername($username)
     {
-        //$roles = $this->roles;
+        $this->username = $username;
 
-        // guarantees that a user always has at least one role for security
-        //if (empty($roles)) {
-        //$roles[] = 'ROLE_USER';
-        //}
-
-        //return array_unique($roles);
-
-        return array($this->role);
+        return $this;
     }
-
     /**
      * Get username
      *
@@ -111,40 +107,5 @@ class User implements UserInterface
     public function getUsername()
     {
         return $this->username;
-    }
-
-    /**
-     * Set username
-     *
-     * @param string $username
-     *
-     * @return username
-     */
-    public function setUsername($username)
-    {
-        $this->username = $username;
-
-        return $this;
-    }
-
-    /**
-     * Returns the salt that was originally used to encode the password.
-     */
-    public function getSalt()
-    {
-        // See "Do you need to use a Salt?" at http://symfony.com/doc/current/cookbook/security/entity_provider.html
-        // we're using bcrypt in security.yml to encode the password, so
-        // the salt value is built-in and you don't have to generate one
-
-        return;
-    }
-
-    /**
-     * Removes sensitive data from the user.
-     */
-    public function eraseCredentials()
-    {
-        // if you had a plainPassword property, you'd nullify it here
-        // $this->plainPassword = null;
     }
 }

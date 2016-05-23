@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Bed
  *
- * @ORM\Table(name="bed")
+ * @ORM\Table(name="bed", indexes={@ORM\Index(name="hospital_id", columns={"hospital_id"}), @ORM\Index(name="hospital_id_2", columns={"hospital_id"})})
  * @ORM\Entity
  */
 class Bed
@@ -24,7 +24,7 @@ class Bed
      *
      * @ORM\Column(name="oxygenSupply", type="string", length=15, nullable=false)
      */
-    private $oxygenSupply;
+    private $oxygensupply;
 
     /**
      * @var string
@@ -48,6 +48,16 @@ class Bed
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $bedno;
+
+    /**
+     * @var \AppBundle\Entity\Icu
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Icu")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="hospital_id", referencedColumnName="id")
+     * })
+     */
+    private $hospital;
 
 
 
@@ -82,9 +92,9 @@ class Bed
      *
      * @return Bed
      */
-    public function setOxygenSupply($oxygensupply)
+    public function setOxygensupply($oxygensupply)
     {
-        $this->oxygenSupply = $oxygensupply;
+        $this->oxygensupply = $oxygensupply;
 
         return $this;
     }
@@ -94,9 +104,9 @@ class Bed
      *
      * @return string
      */
-    public function getOxygenSupply()
+    public function getOxygensupply()
     {
-        return $this->oxygenSupply;
+        return $this->oxygensupply;
     }
 
     /**
@@ -156,40 +166,28 @@ class Bed
     {
         return $this->bedno;
     }
-    /**
-     * @var string
-     */
-    private $oxygensypply;
-
-
 
     /**
-     * Set oxygensypply
+     * Set hospital
      *
-     * @param string $oxygensypply
+     * @param \AppBundle\Entity\Icu $hospital
      *
      * @return Bed
      */
-    public function setOxygensypply($oxygensypply)
+    public function setHospital(\AppBundle\Entity\Icu $hospital = null)
     {
-        $this->oxygensypply = $oxygensypply;
+        $this->hospital = $hospital;
 
         return $this;
     }
 
     /**
-     * Get oxygensypply
+     * Get hospital
      *
-     * @return string
+     * @return \AppBundle\Entity\Icu
      */
-    public function getOxygensypply()
+    public function getHospital()
     {
-        return $this->oxygensypply;
+        return $this->hospital;
     }
-    /**
-     * @var string
-     */
-    private $oxygensupply;
-
-
 }

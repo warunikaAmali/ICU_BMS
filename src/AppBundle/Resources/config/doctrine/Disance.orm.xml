@@ -1,25 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-  <entity name="AppBundle\Entity\Icu" table="icu">
+  <entity name="AppBundle\Entity\Disance" table="disance">
     <id name="id" type="integer" column="id">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="name" type="string" column="name" length="50" nullable="false">
+    <field name="fromh" type="string" column="fromH" length="50" nullable="false">
       <options>
         <option name="fixed"/>
       </options>
     </field>
-    <field name="address" type="string" column="address" length="60" nullable="false">
+    <field name="toh" type="string" column="toH" length="50" nullable="false">
       <options>
         <option name="fixed"/>
       </options>
     </field>
-    <field name="phonenumber" type="integer" column="phoneNumber" nullable="false">
-      <options>
-        <option name="unsigned"/>
-      </options>
-    </field>
-    <field name="vacancies" type="integer" column="vacancies" nullable="false">
+    <field name="distance" type="integer" column="distance" nullable="false">
       <options>
         <option name="unsigned"/>
       </options>

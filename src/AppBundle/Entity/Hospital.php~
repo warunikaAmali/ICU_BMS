@@ -1,16 +1,21 @@
 <?php
 
-namespace CentralBundle\Entity;
+namespace AppBundle\Entity;
 
 /**
- * Bed
+ * Hospital
  */
-class Bed
+class Hospital
 {
     /**
      * @var string
      */
-    private $status;
+    private $name;
+
+    /**
+     * @var integer
+     */
+    private $vacancies;
 
     /**
      * @var string
@@ -20,7 +25,7 @@ class Bed
     /**
      * @var string
      */
-    private $artificialrespiration;
+    private $artificialrespiraton;
 
     /**
      * @var string
@@ -30,31 +35,55 @@ class Bed
     /**
      * @var integer
      */
-    private $bedno;
+    private $id;
 
 
     /**
-     * Set status
+     * Set name
      *
-     * @param string $status
+     * @param string $name
      *
-     * @return Bed
+     * @return Hospital
      */
-    public function setStatus($status)
+    public function setName($name)
     {
-        $this->status = $status;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get status
+     * Get name
      *
      * @return string
      */
-    public function getStatus()
+    public function getName()
     {
-        return $this->status;
+        return $this->name;
+    }
+
+    /**
+     * Set vacancies
+     *
+     * @param integer $vacancies
+     *
+     * @return Hospital
+     */
+    public function setVacancies($vacancies)
+    {
+        $this->vacancies = $vacancies;
+
+        return $this;
+    }
+
+    /**
+     * Get vacancies
+     *
+     * @return integer
+     */
+    public function getVacancies()
+    {
+        return $this->vacancies;
     }
 
     /**
@@ -62,7 +91,7 @@ class Bed
      *
      * @param string $oxygensupply
      *
-     * @return Bed
+     * @return Hospital
      */
     public function setOxygensupply($oxygensupply)
     {
@@ -82,27 +111,27 @@ class Bed
     }
 
     /**
-     * Set artificialrespiration
+     * Set artificialrespiraton
      *
-     * @param string $artificialrespiration
+     * @param string $artificialrespiraton
      *
-     * @return Bed
+     * @return Hospital
      */
-    public function setArtificialrespiration($artificialrespiration)
+    public function setArtificialrespiraton($artificialrespiraton)
     {
-        $this->artificialrespiration = $artificialrespiration;
+        $this->artificialrespiraton = $artificialrespiraton;
 
         return $this;
     }
 
     /**
-     * Get artificialrespiration
+     * Get artificialrespiraton
      *
      * @return string
      */
-    public function getArtificialrespiration()
+    public function getArtificialrespiraton()
     {
-        return $this->artificialrespiration;
+        return $this->artificialrespiraton;
     }
 
     /**
@@ -110,7 +139,7 @@ class Bed
      *
      * @param string $cardiacmonitor
      *
-     * @return Bed
+     * @return Hospital
      */
     public function setCardiacmonitor($cardiacmonitor)
     {
@@ -130,13 +159,12 @@ class Bed
     }
 
     /**
-     * Get bedno
+     * Get id
      *
      * @return integer
      */
-    public function getBedno()
+    public function getId()
     {
-        return $this->bedno;
+        return $this->id;
     }
 }
-
