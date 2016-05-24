@@ -32,14 +32,7 @@ class NurseController extends Controller
     {
         return $this->render('nurse/home.html.twig', array());
     }
-    /**
-     * @Route("/nurse/addPatient", name="add_patients")
-     */
-    public function patientAddAction(Request $request)
-    {
-
-        $patient = new Patient();
-
+    public function getHospital(){
         $em = $this->getDoctrine()->getManager();
         $connection = $em->getConnection();
 
@@ -55,6 +48,20 @@ class NurseController extends Controller
         foreach($result as $res){
             $hospital_id = $res['hospital_id'];
         }
+        return $hospital_id;
+    }
+    /**
+     * @Route("/nurse/addPatient", name="add_patients")
+     */
+    public function patientAddAction(Request $request)
+    {
+
+        $patient = new Patient();
+        $em = $this->getDoctrine()->getManager();
+        $connection = $em->getConnection();
+
+        $hospital_id=$this->getHospital();
+
 //        print_r("$hospital_id");
 
         //getting the available beds of hospital
@@ -105,8 +112,9 @@ class NurseController extends Controller
                 $statement = $connection->prepare($query_patient);
                 $statement->execute();
 
-//            $query_bed="UPDATE bed set status='Occupied' WHERE hospital_id=.$hospital_id. AND bedNo= .$patient->getBedno().";
-
+//            $query_bed="UPDATE bed set status='Occupied' WHERE hospital_id=" .$hospital_id. " AND bedNo= .$patient->getBedno().";
+//            $statementb = $connection->prepare($query_bed);
+//            $statementb->execute();
 
 
                 return $this->render('nurse/addPatient.html.twig');
@@ -117,32 +125,33 @@ class NurseController extends Controller
         ));
     }
     /**
-     * @Route("/nurse/addRecord{bhtNo}", defaults={"bhtNo"=0}, name="addRecord")
+     * @Route("/nurse/addRecord{PatientId}", defaults={"PatientId"=0}, name="addRecord")
      */
-    public function patientRecordAction(Request $request, $bhtNo)
+    public function patientRecordAction(Request $request, $PatientId)
     {
         $records = new Records();
 
         $em = $this->getDoctrine()->getManager();
         $connection = $em->getConnection();
 
+        $hospital_id=$this->getHospital();
 
-        $query = "SELECT BHT_No FROM patient";
+        $query = "SELECT patient_id FROM patient";
         $statement = $connection->prepare($query);
         $statement->execute();
         $result = $statement->fetchAll();
 
-        $bhtNo_list = array();
+        $PatientId_list = array();
 
         foreach($result as $res){
-            $bhtNo_list[$res['BHT_No']] = $res['BHT_No'];
+            $PatientId_list[$res['patient_id']] = $res['patient_id'];
         }
 
 
         $form = $this->createFormBuilder($records)
             //->add('recordNo', IntegerType::class)
 
-            ->add('bhtNo',  ChoiceType::class, ['choices' => $bhtNo_list])
+            ->add('PatientId',  ChoiceType::class, ['choices' => $PatientId_list])
 //            ->add('date',  DateType::class,
 //                ['input'  => 'datetime', 'widget' => 'choice', 'years' => range(2016,2050)])
 //            ->add('time', TimeType::class, array(
@@ -165,7 +174,7 @@ class NurseController extends Controller
             ->add('hydrogenState', IntegerType::class)
             ->add('bloodPressure', IntegerType::class)
             ->add('pulseRate', IntegerType::class)
-            ->add('heartState', IntegerType::class)
+            ->add('heartRate', IntegerType::class)
             ->add('save', SubmitType::class, array('label' => 'Add new Record'))
             ->getForm();
 
@@ -173,10 +182,10 @@ class NurseController extends Controller
 
         if($form->isValid()){
 
-//            $query = "INSERT INTO records (BHT_No) VALUES ";
-            $query = "INSERT INTO records (BHT_No, acuteRenalFailure, confirmedInfection, vasoactiveMedication, invasiveMedication,
+//            $query = "INSERT INTO records (patient_id) VALUES ";
+            $query = "INSERT INTO records (patient_id, acuteRenalFailure, confirmedInfection, vasoactiveMedication, invasiveMedication,
                            nonInvasiveMedication, dialysis, dialysisType,heartRate, pulseRate, bodyTemperature, paralysed,spontaneousBreathing, bloodPressure, hydrogenState) VALUES ";
-            $query .= "(" . $records->getBhtNo() .  ", ";
+            $query .= "(" . $records->getPatientId() .  ", ";
             $query .= "'"  . $records->getAcuterenalfailure() . "', '" . $records->getConfirmedinfection() . "', ";
             $query .= "'" . $records->getVasoactivemedication() . "', '" . $records->getInvasivemedication() . "', ";
             $query .= "'" . $records->getNoninvasivemedication() . "', '" . $records->getDialysis() . "', ";
