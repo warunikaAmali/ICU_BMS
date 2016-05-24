@@ -4,10 +4,12 @@ namespace AppBundle\Controller\Nurse;
 
 use AppBundle\Entity\Bed;
 use AppBundle\Entity\Condition;
+use AppBundle\Entity\Icu;
 use AppBundle\Entity\Nurse;
 use AppBundle\Entity\Patient;
 use AppBundle\Entity\Records;
 
+use AppBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,26 +37,44 @@ class NurseController extends Controller
      */
     public function patientAddAction(Request $request)
     {
+
         $patient = new Patient();
 
         $em = $this->getDoctrine()->getManager();
         $connection = $em->getConnection();
 
-        $query = "SELECT name FROM icu";
+        //getting the current user's id
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $userId = $user->getUsername();
+
+        //getting the hospital of current user
+        $query = "SELECT hospital_id FROM user WHERE username='$userId'";
         $statement = $connection->prepare($query);
         $statement->execute();
         $result = $statement->fetchAll();
-
-        $icu_list = array();
-
         foreach($result as $res){
-            $icu_list[$res['name']] = $res['name'];
+            $hospital_id = $res['hospital_id'];
+        }
+//        print_r("$hospital_id");
+
+        //getting the available beds of hospital
+        $query2 = "SELECT bedNo FROM bed WHERE hospital_id='$hospital_id' AND status='Not Occupied'";
+        $statement2 = $connection->prepare($query2);
+        $statement2->execute();
+        $result2 = $statement2->fetchAll();
+        $beds=array();
+        if($result2==null){
+            print_r("No available beds");
+        }
+        else{
+            foreach($result2 as $res){
+                $beds[$res['bedNo']] = $res['bedNo'];
+                print_r($res['bedNo']);
+            }
         }
 
-
         $form = $this->createFormBuilder($patient)
-            ->add('IcuName',  ChoiceType::class, ['choices' => $icu_list])
-            ->add('bedNo', IntegerType::class)
+            ->add('bedNo',  ChoiceType::class, ['choices' => $beds])
             ->add('name', TextType::class, ['required' => false])
             ->add('gender', ChoiceType::class, array('choices' => array('Male' => 'Male', 'Female'=>'Female')))
             ->add('nic', TextType::class)
@@ -71,31 +91,22 @@ class NurseController extends Controller
             ->add('save', SubmitType::class, array('label' => 'Add new Patient'))
             ->getForm();
         $form->handleRequest($request);
+
         if($form->isValid()){
 
-            $query = "SELECT name FROM patient where BHT_No = $this->$patient->getPatientId()";
-            $statement = $connection->prepare($query);
-            $statement->execute();
-            $result = $statement->fetchAll();
-
-            if($result==null){
                 $query_patient = "INSERT INTO patient ";
-                $query_patient .= "(patient_id, bedNo, name, gender, nic, birthDate, ";
+                $query_patient .= "(hospital_id, patient_id, bedNo, name, gender, nic, birthDate, ";
                 $query_patient .= "phoneNumber, address, admittedDate, reasonToAdmit)";
                 $query_patient .= "VALUES ";
-                $query_patient .= "(" . $patient->getBhtNo() . ", " . $patient->getBedno() . ", '" . $patient->getName() . "', ";
+                $query_patient .= "(" .$hospital_id. ", " . $patient->getBedno() . ", '" . $patient->getName() . "', ";
                 $query_patient .= "'" . $patient->getGender() . "', '" . $patient->getNic() . "', '" . $patient->getBirthDate()->format('y/m/d') . "', ";
                 $query_patient .= "" . $patient->getPhonenumber() . ", '" . $patient->getAddress() . "', ";
                 $query_patient .= "'" . $patient->getAdmitteddate()->format('y/m/d') . "', '" . $patient->getReasontoadmit() ."' )";
                 $statement = $connection->prepare($query_patient);
                 $statement->execute();
 
+
                 return $this->render('nurse/addPatient.html.twig');
-            }
-            else{
-
-            }
-
 
         }
         return $this->render('nurse/addPatient.html.twig', array('patient' => $patient,

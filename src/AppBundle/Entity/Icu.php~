@@ -15,9 +15,9 @@ class Icu
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=50, nullable=false)
+     * @ORM\Column(name="hospital", type="string", length=50, nullable=false)
      */
-    private $name;
+    private $hospital;
 
     /**
      * @var string

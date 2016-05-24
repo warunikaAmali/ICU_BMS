@@ -36,6 +36,13 @@ class Nurse
     /**
      * @var integer
      *
+     * @ORM\Column(name="hospital_id", type="integer", nullable=false)
+     */
+    private $hospitalId;
+
+    /**
+     * @var integer
+     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
@@ -114,6 +121,30 @@ class Nurse
     public function getShift()
     {
         return $this->shift;
+    }
+
+    /**
+     * Set hospitalId
+     *
+     * @param integer $hospitalId
+     *
+     * @return Nurse
+     */
+    public function setHospitalId($hospitalId)
+    {
+        $this->hospitalId = $hospitalId;
+
+        return $this;
+    }
+
+    /**
+     * Get hospitalId
+     *
+     * @return integer
+     */
+    public function getHospitalId()
+    {
+        return $this->hospitalId;
     }
 
     /**

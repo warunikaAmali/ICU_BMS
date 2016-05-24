@@ -36,6 +36,13 @@ class Nurse
     /**
      * @var integer
      *
+     * @ORM\Column(name="hospital_id", type="integer", nullable=false)
+     */
+    private $hospitalId;
+
+    /**
+     * @var integer
+     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")

@@ -36,9 +36,19 @@ class Doctor
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="hospital_id", type="integer", nullable=false)
+     */
+    private $hospitalId;
+
+    /**
+     * @var \AppBundle\Entity\Icu
+     *
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Icu")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id", referencedColumnName="id")
+     * })
      */
     private $id;
 
@@ -117,9 +127,47 @@ class Doctor
     }
 
     /**
-     * Get id
+     * Set hospitalId
+     *
+     * @param integer $hospitalId
+     *
+     * @return Doctor
+     */
+    public function setHospitalId($hospitalId)
+    {
+        $this->hospitalId = $hospitalId;
+
+        return $this;
+    }
+
+    /**
+     * Get hospitalId
      *
      * @return integer
+     */
+    public function getHospitalId()
+    {
+        return $this->hospitalId;
+    }
+
+    /**
+     * Set id
+     *
+     * @param \AppBundle\Entity\Icu $id
+     *
+     * @return Doctor
+     */
+    public function setId(\AppBundle\Entity\Icu $id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get id
+     *
+     * @return \AppBundle\Entity\Icu
      */
     public function getId()
     {

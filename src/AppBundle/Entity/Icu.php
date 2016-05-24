@@ -15,9 +15,9 @@ class Icu
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=50, nullable=false)
+     * @ORM\Column(name="hospital", type="string", length=50, nullable=false)
      */
-    private $name;
+    private $hospital;
 
     /**
      * @var string
@@ -52,27 +52,27 @@ class Icu
 
 
     /**
-     * Set name
+     * Set hospital
      *
-     * @param string $name
+     * @param string $hospital
      *
      * @return Icu
      */
-    public function setName($name)
+    public function setHospital($hospital)
     {
-        $this->name = $name;
+        $this->hospital = $hospital;
 
         return $this;
     }
 
     /**
-     * Get name
+     * Get hospital
      *
      * @return string
      */
-    public function getName()
+    public function getHospital()
     {
-        return $this->name;
+        return $this->hospital;
     }
 
     /**

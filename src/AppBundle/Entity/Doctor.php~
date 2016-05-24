@@ -36,9 +36,19 @@ class Doctor
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="hospital_id", type="integer", nullable=false)
+     */
+    private $hospitalId;
+
+    /**
+     * @var \AppBundle\Entity\Icu
+     *
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Icu")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id", referencedColumnName="id")
+     * })
      */
     private $id;
 

@@ -15,5 +15,10 @@
       </options>
     </field>
     <field name="shift" type="time" column="shift" nullable="false"/>
+    <field name="hospitalId" type="integer" column="hospital_id" nullable="false">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
   </entity>
 </doctrine-mapping>
