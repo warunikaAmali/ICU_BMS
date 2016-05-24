@@ -58,7 +58,7 @@ class NurseController extends Controller
 //        print_r("$hospital_id");
 
         //getting the available beds of hospital
-        $query2 = "SELECT bedNo FROM bed WHERE hospital_id='$hospital_id' AND status='Not Occupied'";
+        $query2 = "SELECT bedNo FROM bed WHERE hospital_id=". $hospital_id. " AND status='Not Occupied'";
         $statement2 = $connection->prepare($query2);
         $statement2->execute();
         $result2 = $statement2->fetchAll();
@@ -104,6 +104,9 @@ class NurseController extends Controller
                 $query_patient .= "'" . $patient->getAdmitteddate()->format('y/m/d') . "', '" . $patient->getReasontoadmit() ."' )";
                 $statement = $connection->prepare($query_patient);
                 $statement->execute();
+
+//            $query_bed="UPDATE bed set status='Occupied' WHERE hospital_id=.$hospital_id. AND bedNo= .$patient->getBedno().";
+
 
 
                 return $this->render('nurse/addPatient.html.twig');
