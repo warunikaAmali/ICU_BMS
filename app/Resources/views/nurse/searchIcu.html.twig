@@ -2,9 +2,14 @@
 
 {% block main %}
 
-    <h4>Nearest ICU -> {{ nearest }} </h4>
-    <h4>Distance -> {{ distance }}</h4>
-    <h4>Phone Number -> {{ phno }}</h4>
-    <h4>No of Vacancies -> {{ vacancy }}</h4>
 
+    {% if  nearest  == NULL %}
+        <h4>No Available ICU</h4>
+    {% else %}
+        <h4>Nearest ICU -> {{ nearest }} </h4>
+        <h4>Distance -> {{ distance }}</h4>
+        <h4>Phone Number -> {{ phno }}</h4>
+        <h4>No of Vacancies -> {{ vacancy }}</h4>
+
+        {% endif %}
 {% endblock %}

@@ -5,6 +5,7 @@
         {% if app.user and is_granted('ROLE_NURSE') %}
             <a href=" {{ path('add_patients') }} " class="list-group-item">Add Patients</a>
             <a href=" {{ path('addRecord') }} " class="list-group-item">Record Patient Details</a>
+            <a href=" {{ path('search_icu') }} " class="list-group-item">Search ICU</a>
 
         {% endif %}
         {% if app.user and is_granted('ROLE_DOCTOR') %}

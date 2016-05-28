@@ -515,7 +515,7 @@ class Records
      *
      * @return Records
      */
-    public function setPatient(\AppBundle\Entity\Patient $patient = null)
+    public function setPatient($patient = null)
     {
         $this->patient = $patient;
 

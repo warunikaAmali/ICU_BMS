@@ -1,0 +1,53 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Distance
+ *
+ * @ORM\Table(name="distance", indexes={@ORM\Index(name="location2", columns={"location2"}), @ORM\Index(name="location1", columns={"location1"})})
+ * @ORM\Entity
+ */
+class Distance
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="distance", type="integer", nullable=false)
+     */
+    private $distance;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \AppBundle\Entity\Icu
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Icu")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="location1", referencedColumnName="id")
+     * })
+     */
+    private $location1;
+
+    /**
+     * @var \AppBundle\Entity\Icu
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Icu")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="location2", referencedColumnName="id")
+     * })
+     */
+    private $location2;
+
+
+}
+

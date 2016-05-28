@@ -1,0 +1,60 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Operation
+ *
+ * @ORM\Table(name="operation", indexes={@ORM\Index(name="patient_id", columns={"patient_id"}), @ORM\Index(name="hospital_id", columns={"hospital_id"})})
+ * @ORM\Entity
+ */
+class Operation
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="type", type="string", length=20, nullable=false)
+     */
+    private $type;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="datetime", nullable=false)
+     */
+    private $date;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \AppBundle\Entity\Icu
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Icu")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="hospital_id", referencedColumnName="id")
+     * })
+     */
+    private $hospital;
+
+    /**
+     * @var \AppBundle\Entity\Patient
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Patient")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="patient_id", referencedColumnName="patient_id")
+     * })
+     */
+    private $patient;
+
+
+}
+

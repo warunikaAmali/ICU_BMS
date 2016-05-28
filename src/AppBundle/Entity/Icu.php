@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Icu
  *
- * @ORM\Table(name="icu")
+ * @ORM\Table(name="icu", uniqueConstraints={@ORM\UniqueConstraint(name="hospital", columns={"hospital"})})
  * @ORM\Entity
  */
 class Icu
@@ -156,5 +156,4 @@ class Icu
     {
         return $this->id;
     }
-
 }

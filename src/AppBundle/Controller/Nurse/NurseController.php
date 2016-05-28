@@ -7,10 +7,13 @@ use AppBundle\Entity\Condition;
 use AppBundle\Entity\Distance;
 use AppBundle\Entity\Icu;
 use AppBundle\Entity\Nurse;
+use AppBundle\Entity\Operation;
 use AppBundle\Entity\Patient;
 use AppBundle\Entity\Records;
 
 use AppBundle\Entity\User;
+use AppBundle\Form\ChangePasswordType;
+use AppBundle\Form\Model\ChangePassword;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\DataTransformer\NumberToLocalizedStringTransformer;
@@ -65,8 +68,6 @@ class NurseController extends Controller
 
         $hospital_id=$this->getHospital();
 
-//        print_r("$hospital_id");
-
         //getting the available beds of hospital
         $query2 = "SELECT bedNo FROM bed WHERE hospital_id=". $hospital_id. " AND status='Not Occupied'";
         $statement2 = $connection->prepare($query2);
@@ -79,19 +80,21 @@ class NurseController extends Controller
         else{
             foreach($result2 as $res){
                 $beds[$res['bedNo']] = $res['bedNo'];
-                print_r($res['bedNo']);
+
             }
             $query3="SELECT patient_id from patient";
             $statement3 = $connection->prepare($query3);
             $statement3->execute();
             $result3 = $statement3->fetchAll();
+            $patient_id=0;
             foreach($result3 as $res){
                 $patient_id = $res['patient_id'];
             }
+
             $form = $this->createFormBuilder($patient)
                 ->add('patientId', TextType::class , array(
                     'label' => 'Patient Id',
-                    'data' => $patient_id,
+                    'data' => $patient_id+1,
                     'disabled' => true
                 ))
                 ->add('bedNo',  ChoiceType::class, ['choices' => $beds])
@@ -114,6 +117,7 @@ class NurseController extends Controller
 
             if($form->isValid()){
 
+                print_r("DDDDDd");
                 $query_patient = "INSERT INTO patient ";
                 $query_patient .= "(hospital_id, bedNo, name, gender, nic, birthDate, ";
                 $query_patient .= "phoneNumber, address, admittedDate, reasonToAdmit)";
@@ -133,6 +137,9 @@ class NurseController extends Controller
 
                 ));
             }
+            return $this->render('nurse/addPatient.html.twig', array('patient' => $patient,'form' => $form->createView(),
+
+            ));
         }
 
 
@@ -222,11 +229,16 @@ class NurseController extends Controller
     {
 
         $bed = new Bed();
+        $icu=new Icu();
 
         $em = $this->getDoctrine()->getManager();
         $connection = $em->getConnection();
         $hospital_id=$this->getHospital();
 
+        $icu = $this->getDoctrine()
+            ->getRepository('AppBundle:Icu')->find($hospital_id);
+
+        print_r($icu);
         $form = $this->createFormBuilder($bed)
 
             ->add('status', ChoiceType::class, array('choices' => array('Occupied' => 'Occupied', 'Not Occupied'=>'Not Occupied')))
@@ -244,6 +256,7 @@ class NurseController extends Controller
             $statement = $connection->prepare($query);
             $statement->execute();
 
+
             return $this->render('nurse/addBed.html.twig');
         }
         return $this->render('nurse/addBed.html.twig', array('bed' => $bed,
@@ -251,7 +264,6 @@ class NurseController extends Controller
         ));
 
     }
-
 
     /**
      * @Route("/nurse/searchIcu", name="search_icu")
@@ -345,7 +357,84 @@ class NurseController extends Controller
         ));
     }
 
+    /**
+     * @Route("/nurse/addOperation", name="add_operation")
+     */
+    public function operationAddAction(Request $request)
+    {
 
+        $operation = new Operation();
+
+        $em = $this->getDoctrine()->getManager();
+        $connection = $em->getConnection();
+        $hospital_id=$this->getHospital();
+
+        $query = "SELECT patient_id FROM patient WHERE hospital_id=". $hospital_id;
+        $statement = $connection->prepare($query);
+        $statement->execute();
+        $result = $statement->fetchAll();
+
+        $PatientId_list = array();
+
+        foreach($result as $res){
+            $PatientId_list[$res['patient_id']] = $res['patient_id'];
+        }
+
+
+        $form = $this->createFormBuilder($operation)
+
+            ->add('Patient',  ChoiceType::class, ['choices' => $PatientId_list])
+            ->add('type', TextType::class, ['required' => true])
+            ->add('date',  DateType::class,
+                ['input'  => 'datetime', 'widget' => 'choice', 'years' => range(2016,2050)])
+            ->add('save', SubmitType::class, array('label' => 'Add Operation'))
+            ->getForm();
+        $form->handleRequest($request);
+        if($form->isValid()){
+            $query = "INSERT INTO operation ";
+            $query .= "(type,patient_id,hospital_id,date )";
+            $query .= "VALUES ";
+            $query .= "(" . $operation->getType() . ", '" . $operation->getPatient() . "', '" . $hospital_id . "', " . $operation->getDate() ;
+            $statement = $connection->prepare($query);
+            $statement->execute();
+
+            return $this->render('nurse/addOperation.html.twig');
+        }
+        return $this->render('nurse/addOperation.html.twig', array('operation' => $operation,
+            'form' => $form->createView(),
+        ));
+
+    }
+
+
+    /**
+     * @Route("/nurse/changePassword", name="change_password")
+     */
+    public function changePasswdAction(Request $request)
+    {
+        $user= new User();
+
+        $em = $this->getDoctrine()->getManager();
+        $connection = $em->getConnection();
+
+        $hospital_id=$this->getHospital();
+
+
+        /*$changePasswordModel = new ChangePassword();
+        $form = $this->createForm(new ChangePasswordType(), $changePasswordModel);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // perform some action,
+            // such as encoding with MessageDigestPasswordEncoder and persist
+            return $this->redirect($this->render('nurse/changePasswd.html.twig'));
+        }
+
+        return $this->render('nurse/changePasswd.html.twig', array(
+            'form' => $form->createView(),
+        ));*/
+    }
 
 }
 ?>

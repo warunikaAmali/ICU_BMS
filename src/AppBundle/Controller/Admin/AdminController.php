@@ -39,7 +39,6 @@ class AdminController extends Controller
         $hospitals = $em->getRepository('AppBundle:Icu')->findAll();
         $form = $this->createFormBuilder($user)
 
-//            ->add('hospital',  ChoiceType::class, ['choices' => $hospitals])
             ->add('hospital', ChoiceType::class, [
                 'choices' => $hospitals,
                 'choice_label' => function($hospital, $key, $index) {
@@ -62,7 +61,6 @@ class AdminController extends Controller
             ->getForm();
             $form->handleRequest($request);
             if($form->isValid()){
-                print_r($user->getUsername());
                 $query = "INSERT INTO user ";
                 $query .= "(username,password,name,role,hospital_id) ";
                 $query .= "VALUES ";
@@ -71,6 +69,7 @@ class AdminController extends Controller
                 $statement = $connection->prepare($query);
                 $statement->execute();
 
+//                print_r($statement);
                 return $this->render('admin/addUser.html.twig');
             }
             return $this->render('admin/addUser.html.twig', array('user' => $user,

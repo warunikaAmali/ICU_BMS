@@ -1,0 +1,24 @@
+{% extends 'nurse/home.html.twig' %}
+
+{% block main %}
+
+    <center><h4>Add an Operation</h4></center>
+    {% if form is defined %}
+        {% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
+        <div class="col-sm-11">
+            <div class="well">
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+    {% else %}
+        <div class="row">
+            <div class="well">
+                <h4>New Operation added to the system</h4> <br>
+            </div>
+
+        </div>
+    {% endif %}
+
+{% endblock %}
