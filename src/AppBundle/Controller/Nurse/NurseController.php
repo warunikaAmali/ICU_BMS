@@ -4,6 +4,7 @@ namespace AppBundle\Controller\Nurse;
 
 use AppBundle\Entity\Bed;
 use AppBundle\Entity\Condition;
+use AppBundle\Entity\Distance;
 use AppBundle\Entity\Icu;
 use AppBundle\Entity\Nurse;
 use AppBundle\Entity\Patient;
@@ -12,6 +13,8 @@ use AppBundle\Entity\Records;
 use AppBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\DataTransformer\NumberToLocalizedStringTransformer;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
@@ -71,38 +74,48 @@ class NurseController extends Controller
         $result2 = $statement2->fetchAll();
         $beds=array();
         if($result2==null){
-            print_r("No available beds");
+            return $this->render('nurse/noBeds.html.twig');
         }
         else{
             foreach($result2 as $res){
                 $beds[$res['bedNo']] = $res['bedNo'];
                 print_r($res['bedNo']);
             }
-        }
-
-        $form = $this->createFormBuilder($patient)
-            ->add('bedNo',  ChoiceType::class, ['choices' => $beds])
-            ->add('name', TextType::class, ['required' => false])
-            ->add('gender', ChoiceType::class, array('choices' => array('Male' => 'Male', 'Female'=>'Female')))
-            ->add('nic', TextType::class)
-            ->add('birthDate', DateType::class,
-                ['input'  => 'datetime', 'widget' => 'choice', 'years' => range(1980,2016)],['required' => false])
-            ->add('phoneNumber', IntegerType::class, ['required' => false])
-            ->add('address', TextType::class, ['required' => false])
-            ->add('admittedDate', DateType::class,
-                ['input'  => 'datetime', 'widget' => 'choice', 'years' => range(2016,2050)])
+            $query3="SELECT patient_id from patient";
+            $statement3 = $connection->prepare($query3);
+            $statement3->execute();
+            $result3 = $statement3->fetchAll();
+            foreach($result3 as $res){
+                $patient_id = $res['patient_id'];
+            }
+            $form = $this->createFormBuilder($patient)
+                ->add('patientId', TextType::class , array(
+                    'label' => 'Patient Id',
+                    'data' => $patient_id,
+                    'disabled' => true
+                ))
+                ->add('bedNo',  ChoiceType::class, ['choices' => $beds])
+                ->add('name', TextType::class, ['required' => false])
+                ->add('gender', ChoiceType::class, array('choices' => array('Male' => 'Male', 'Female'=>'Female')))
+                ->add('nic', TextType::class)
+                ->add('birthDate', DateType::class,
+                    ['input'  => 'datetime', 'widget' => 'choice', 'years' => range(1980,2016)],['required' => false])
+                ->add('phoneNumber', IntegerType::class, ['required' => false])
+                ->add('address', TextType::class, ['required' => false])
+                ->add('admittedDate', DateType::class,
+                    ['input'  => 'datetime', 'widget' => 'choice', 'years' => range(2016,2050)])
 //            ->add('dischargedDate', DateType::class,
 //                ['input'  => 'datetime', 'widget' => 'choice', 'years' => range(2016,2050)],['required' => false])
-            ->add('reasonToAdmit',ChoiceType::class, ['choices' => ['Shock' => 'Shock', 'Acute Respiratory Failure'=>'Acute Respiratory Failure', 'Chronic Respiratory Failure'=>'Chronic Respiratory Failure'
-                , 'Infections'=> 'Infections','Renal Failure'=>'Renal Failure' ,'Bleeding'=>'Bleeding','Clotting'=>'Clotting','Multiple Organ Dysfunction Syndrome – MODS'=>'Multiple Organ Dysfunction Syndrome – MODS' ], 'choices_as_values' => true])
-            ->add('save', SubmitType::class, array('label' => 'Add new Patient'))
-            ->getForm();
-        $form->handleRequest($request);
+                ->add('reasonToAdmit',ChoiceType::class, ['choices' => ['Shock' => 'Shock', 'Acute Respiratory Failure'=>'Acute Respiratory Failure', 'Chronic Respiratory Failure'=>'Chronic Respiratory Failure'
+                    , 'Infections'=> 'Infections','Renal Failure'=>'Renal Failure' ,'Bleeding'=>'Bleeding','Clotting'=>'Clotting','Multiple Organ Dysfunction Syndrome – MODS'=>'Multiple Organ Dysfunction Syndrome – MODS' ], 'choices_as_values' => true])
+                ->add('save', SubmitType::class, array('label' => 'Add new Patient'))
+                ->getForm();
+            $form->handleRequest($request);
 
-        if($form->isValid()){
+            if($form->isValid()){
 
                 $query_patient = "INSERT INTO patient ";
-                $query_patient .= "(hospital_id, patient_id, bedNo, name, gender, nic, birthDate, ";
+                $query_patient .= "(hospital_id, bedNo, name, gender, nic, birthDate, ";
                 $query_patient .= "phoneNumber, address, admittedDate, reasonToAdmit)";
                 $query_patient .= "VALUES ";
                 $query_patient .= "(" .$hospital_id. ", " . $patient->getBedno() . ", '" . $patient->getName() . "', ";
@@ -112,16 +125,19 @@ class NurseController extends Controller
                 $statement = $connection->prepare($query_patient);
                 $statement->execute();
 
-//            $query_bed="UPDATE bed set status='Occupied' WHERE hospital_id=" .$hospital_id. " AND bedNo= .$patient->getBedno().";
-//            $statementb = $connection->prepare($query_bed);
-//            $statementb->execute();
+                $query_bed="UPDATE bed set status='Occupied' WHERE hospital_id=" .$hospital_id. " AND bedNo=" .$patient->getBedno();
+                $statementb = $connection->prepare($query_bed);
+                $statementb->execute();
 
+                return $this->render('nurse/addPatient.html.twig', array('patient' => $patient,
 
-                return $this->render('nurse/addPatient.html.twig');
-
+                ));
+            }
         }
+
+
         return $this->render('nurse/addPatient.html.twig', array('patient' => $patient,
-            'form' => $form->createView(),
+            'no_beds' => 'true',
         ));
     }
     /**
@@ -136,7 +152,7 @@ class NurseController extends Controller
 
         $hospital_id=$this->getHospital();
 
-        $query = "SELECT patient_id FROM patient";
+        $query = "SELECT patient_id FROM patient WHERE hospital_id=". $hospital_id;
         $statement = $connection->prepare($query);
         $statement->execute();
         $result = $statement->fetchAll();
@@ -149,9 +165,7 @@ class NurseController extends Controller
 
 
         $form = $this->createFormBuilder($records)
-            //->add('recordNo', IntegerType::class)
-
-            ->add('PatientId',  ChoiceType::class, ['choices' => $PatientId_list])
+            ->add('Patient',  ChoiceType::class, ['choices' => $PatientId_list])
 //            ->add('date',  DateType::class,
 //                ['input'  => 'datetime', 'widget' => 'choice', 'years' => range(2016,2050)])
 //            ->add('time', TimeType::class, array(
@@ -181,11 +195,9 @@ class NurseController extends Controller
         $form->handleRequest($request);
 
         if($form->isValid()){
-
-//            $query = "INSERT INTO records (patient_id) VALUES ";
             $query = "INSERT INTO records (patient_id, acuteRenalFailure, confirmedInfection, vasoactiveMedication, invasiveMedication,
                            nonInvasiveMedication, dialysis, dialysisType,heartRate, pulseRate, bodyTemperature, paralysed,spontaneousBreathing, bloodPressure, hydrogenState) VALUES ";
-            $query .= "(" . $records->getPatientId() .  ", ";
+            $query .= "(" . $records->getPatient() .  ", ";
             $query .= "'"  . $records->getAcuterenalfailure() . "', '" . $records->getConfirmedinfection() . "', ";
             $query .= "'" . $records->getVasoactivemedication() . "', '" . $records->getInvasivemedication() . "', ";
             $query .= "'" . $records->getNoninvasivemedication() . "', '" . $records->getDialysis() . "', ";
@@ -195,7 +207,6 @@ class NurseController extends Controller
             $statement = $connection->prepare($query);
             $statement->execute();
 
-           // print_r($query);
             return $this->render('nurse/addRecord.html.twig');
         }
         return $this->render('nurse/addRecord.html.twig', array('records' => $records,
@@ -203,14 +214,6 @@ class NurseController extends Controller
         ));
     }
 
-
-    /**
-     * @Route("/nurse/view", name="view_patients")
-     */
-    public function patientViewAction(Request $request)
-    {
-        return $this->render('nurse/home.html.twig', array());
-    }
 
     /**
      * @Route("/nurse/addBed", name="add_beds")
@@ -222,6 +225,7 @@ class NurseController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $connection = $em->getConnection();
+        $hospital_id=$this->getHospital();
 
         $form = $this->createFormBuilder($bed)
 
@@ -234,9 +238,9 @@ class NurseController extends Controller
         $form->handleRequest($request);
         if($form->isValid()){
             $query = "INSERT INTO bed ";
-            $query .= "(status,oxygenSupply, artificialRespiration, cardiacMonitor )";
+            $query .= "(hospital_id, status,oxygenSupply, artificialRespiration, cardiacMonitor )";
             $query .= "VALUES ";
-            $query .= "('" . $bed->getStatus() . "', '" . $bed->getOxygenSupply() . "', '" . $bed->getArtificialrespiration() . "', '" . $bed->getCardiacmonitor() . "')";
+            $query .= "(" . $hospital_id . ", '" . $bed->getStatus() . "', '" . $bed->getOxygenSupply() . "', '" . $bed->getArtificialrespiration() . "', '" . $bed->getCardiacmonitor() . "')";
             $statement = $connection->prepare($query);
             $statement->execute();
 
@@ -247,6 +251,101 @@ class NurseController extends Controller
         ));
 
     }
+
+
+    /**
+     * @Route("/nurse/searchIcu", name="search_icu")
+     */
+    public function searchIcuAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $connection = $em->getConnection();
+
+        $hospital_id=$this->getHospital();
+
+        //Get other ICUs in the database
+        $query1 = "SELECT location2, distance FROM distance RIGHT JOIN icu ON location2=icu.id WHERE location1= " . $hospital_id. " AND vacancies!=0" ;
+        $statement1 = $connection->prepare($query1);
+        $statement1->execute();
+        $result1 = $statement1->fetchAll();
+
+        $hospital_list1 = array(array());
+        $min1=1000000;
+        $nearest1=null;
+        foreach($result1 as $res){
+            $hospital_list1['location'][0] = $res['location2'];
+            $hospital_list1['location'][1] = $res['distance'];
+            if($hospital_list1['location'][1]<$min1){
+                $min1=$hospital_list1['location'][1];//min distance1
+                $nearest1=$hospital_list1['location'][0];//location1
+            }
+        }
+
+        $query2 = "SELECT location1, distance FROM distance RIGHT JOIN icu ON location1=icu.id WHERE location2= " . $hospital_id. " AND vacancies!=0" ;
+        $statement2 = $connection->prepare($query2);
+        $statement2->execute();
+        $result2 = $statement2->fetchAll();
+
+        $hospital_list2 = array(array());
+        $min2=1000000;
+        $nearest2=null;
+        foreach($result2 as $res){
+            $hospital_list2['location'][0] = $res['location1'];
+            $hospital_list2['location'][1] = $res['distance'];
+            if($hospital_list2['location'][1]<$min2){
+                $min2=$hospital_list2['location'][1];//min distance2
+                $nearest2=$hospital_list2['location'][0];//location of min distance2
+            }
+        }
+        //getting the nearest ICU
+        if($min1!=1000000 and $min2!=1000000){
+            if($min2<$min1){
+                $nearest=$nearest2;
+                $min=$min2;
+            }
+            else{
+                $nearest=$nearest1;
+                $min=$min1;
+            }
+        }
+        elseif($min1==1000000){
+            $nearest=$nearest2;
+            $min=$min2;
+        }
+        elseif($min2==1000000){
+            $nearest=$nearest1;
+            $min=$min1;
+        }
+        else{
+            print_r($min1);
+            $nearest=0;
+            $min=0;
+        }
+
+        if($nearest==0){
+            $icu = NULL;
+            $phno=NULL;
+            $vacan=NULL;
+        }
+        else{
+            $query3 = "SELECT hospital,phoneNumber,vacancies FROM icu WHERE id=" .$nearest;
+            $statement3 = $connection->prepare($query3);
+            $statement3->execute();
+            $result3 = $statement3->fetchAll();
+
+            foreach($result3 as $res){
+                $icu = $res['hospital'];
+                $phno=$res['phoneNumber'];
+                $vacan=$res['vacancies'];
+            }
+        }
+
+        return $this->render('nurse/searchIcu.html.twig', array('nearest' => $icu,
+            'distance'=>$min, 'phno' =>$phno, 'vacancy' => $vacan,
+        ));
+    }
+
+
 
 }
 ?>

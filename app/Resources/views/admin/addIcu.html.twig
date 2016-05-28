@@ -1,10 +1,13 @@
-{% extends 'nurse/home.html.twig' %}
+{% extends 'admin/home.html.twig' %}
 
 {% block main %}
 
-    <center><h4>Add a new Bed</h4></center>
+    <center><h4>Add a new ICU</h4></center>
     {% if form is defined %}
         {% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
+        {#{% if ({{ added }} == 'true') %}#}
+            <h4> {{ added }}</h4>
+
         <div class="col-sm-11">
             <div class="well">
                 {{ form_start(form) }}
@@ -12,11 +15,13 @@
                 {{ form_end(form) }}
             </div>
         </div>
+        {#{% endif %}#}
     {% else %}
         <div class="row">
             <div class="well">
-                <h4>New Bed successfully added to the system</h4> <br>
-
+                <h4>New ICU successfully added to the system</h4> <br>
+                <h4>Add distances to other ICUs</h4>
+                <a href=" {{ path('add_distances', {'id':name}) }}" class="list-group-item">Add Distances</a>
             </div>
 
         </div>

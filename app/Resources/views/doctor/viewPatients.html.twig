@@ -1,0 +1,45 @@
+{% extends 'doctor/home.html.twig' %}
+
+{% block main %}
+
+    <h4>List of all Patients in the Hospital</h4>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th><i class="fa fa-trophy"></i> Patient Id</th>
+            <th><i class="fa fa-trophy"></i> Patient name</th>
+            <th><i class="fa fa-genderless"></i>Gender</th>
+            <th><i class="fa fa-unlock-alt"></i> Phone Number</th>
+            <th><i class="fa fa-hand-o-right"></i> Admitted Date</th>
+            <th><i class="fa fa-cogs"></i> Reason for Admission</th>
+            <th><i class="fa fa-cogs"></i> Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for patient in patients %}
+            <tr>
+                <td> {{ patient.patient_id }} </td>
+                <td> {{ patient.name }} </td>
+                <td> {% if patient.gender == 'Male' %}
+                        <i class="fa fa-male"></i> Male
+                    {% else %}
+                        <i class="fa fa-female"></i> Female
+                    {% endif %}
+                </td>
+                <td> {{ patient.phoneNumber }} </td>
+                <td> {{ patient.admittedDate }} </td>
+                <td> {{ patient.reasonToAdmit }} </td>
+                <td>
+                    <div class="item-actions">
+                        <a href="{{ path('view_patients', {'id':patient.patient_id}) }}" class="btn btn-sm btn-default">
+                            <i class="fa fa-eye"></i> View Records
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

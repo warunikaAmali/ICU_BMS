@@ -15,7 +15,7 @@ class Bed
     /**
      * @var string
      *
-     * @ORM\Column(name="status", type="string", length=8, nullable=false)
+     * @ORM\Column(name="status", type="string", length=12, nullable=false)
      */
     private $status;
 

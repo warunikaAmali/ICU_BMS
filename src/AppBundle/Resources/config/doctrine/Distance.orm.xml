@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-  <entity name="AppBundle\Entity\Disance" table="disance">
+  <entity name="AppBundle\Entity\Distance" table="distance">
+    <indexes>
+      <index name="location2" columns="location2"/>
+      <index name="location1" columns="location1"/>
+    </indexes>
     <id name="id" type="integer" column="id">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="fromh" type="string" column="fromH" length="50" nullable="false">
-      <options>
-        <option name="fixed"/>
-      </options>
-    </field>
-    <field name="toh" type="string" column="toH" length="50" nullable="false">
-      <options>
-        <option name="fixed"/>
-      </options>
-    </field>
     <field name="distance" type="integer" column="distance" nullable="false">
       <options>
         <option name="unsigned"/>
       </options>
     </field>
+    <many-to-one field="location1" target-entity="Icu" fetch="LAZY">
+      <join-columns>
+        <join-column name="location1" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="location2" target-entity="Icu" fetch="LAZY">
+      <join-columns>
+        <join-column name="location2" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
   </entity>
 </doctrine-mapping>

@@ -49,13 +49,17 @@
                     <ul class="nav navbar-nav navbar-right">
 
                         {% block header_navigation_links %}
-                            <li><a href="{{ path('homepage') }}">
-                                    <i class="fa fa-home"></i> Homepage </a></li>
-
-
-                            {% if app.user and (is_granted('ROLE_ADMIN')) %}
-                                <li><a href="">
-                                    <i class="fa fa-child"></i> Manage System </a></li>
+                            {% if app.user and is_granted('ROLE_NURSE') %}
+                                <li><a href="{{ path('nurse_homepage') }}">
+                                        <i class="fa fa-home"></i> Homepage </a></li>
+                            {% endif %}
+                            {% if app.user and is_granted('ROLE_DOCTOR') %}
+                                <li><a href="{{ path('doctor_homepage') }}">
+                                        <i class="fa fa-home"></i> Homepage </a></li>
+                            {% endif %}
+                            {% if app.user and is_granted('ROLE_ADMIN') %}
+                                <li><a href="{{ path('admin_homepage') }}">
+                                        <i class="fa fa-home"></i> Homepage </a></li>
                             {% endif %}
 
                         {% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'nurse/home.html.twig' %}
+
+{% block main %}
+
+    <center><h4>No Beds Available</h4></center>
+
+        <div class="row">
+            <div class="well">
+
+                    <h4>There are no empty beds in this ICU. </h4><br>
+                <h5>You can search for other ICUs</h5>
+                    <a href=" {{ path('search_icu') }}" class="list-group-item">Search ICUs</a>
+            </div>
+
+        </div>
+
+{% endblock %}

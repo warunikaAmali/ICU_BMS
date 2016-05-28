@@ -1,0 +1,59 @@
+{% extends 'doctor/home.html.twig' %}
+
+{% block main %}
+
+
+
+        <h4>Patient ID -> {{ id }}</h4>
+
+
+    {% if records==null %}
+      <h4>No records have been added yet</h4>
+
+    {% else %}
+        <h4>All records of the Patient</h4>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th><i class="fa fa-trophy"></i> Date</th>
+            <th><i class="fa fa-trophy"></i> Acute Renal Failure</th>
+            <th><i class="fa fa-genderless"></i>Confirmed Infection</th>
+            <th><i class="fa fa-unlock-alt"></i> Vasoactive Medication</th>
+            <th><i class="fa fa-hand-o-right"></i> Invasive Medication</th>
+            <th><i class="fa fa-cogs"></i> Non Invasive Medication</th>
+            <th><i class="fa fa-cogs"></i> Dialysis</th>
+            <th><i class="fa fa-cogs"></i> Dialysis Type</th>
+            <th><i class="fa fa-cogs"></i> Heart Rate</th>
+            <th><i class="fa fa-cogs"></i> Pulse Rate</th>
+            <th><i class="fa fa-cogs"></i> Body Temperature</th>
+            <th><i class="fa fa-cogs"></i> Paralysed</th>
+            <th><i class="fa fa-cogs"></i> Spontaneous Breathing</th>
+            <th><i class="fa fa-cogs"></i> Blood Pressure</th>
+            <th><i class="fa fa-cogs"></i> Hydrogen Rate</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for record in records %}
+            <tr>
+                <td> {{ record.date }} </td>
+                <td> {{ record.acuteRenalFailure }} </td>
+                <td> {{ record.confirmedInfection }} </td>
+                <td> {{ record.vasoactiveMedication }} </td>
+                <td> {{ record.invasiveMedication }} </td>
+                <td> {{ record.nonInvasiveMedication }} </td>
+                <td> {{ record.dialysis }} </td>
+                <td> {{ record.dialysisType }} </td>
+                <td> {{ record.heartRate }} </td>
+                <td> {{ record.pulseRate }} </td>
+                <td> {{ record.bodyTemperature }} </td>
+                <td> {{ record.paralysed }} </td>
+                <td> {{ record.spontaneousBreathing }} </td>
+                <td> {{ record.bloodPressure }} </td>
+                <td> {{ record.hydrogenState }} </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% endif %}
+{% endblock %}

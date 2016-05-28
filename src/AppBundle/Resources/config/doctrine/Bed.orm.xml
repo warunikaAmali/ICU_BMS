@@ -8,7 +8,7 @@
     <id name="bedno" type="integer" column="bedNo">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="status" type="string" column="status" length="8" nullable="false">
+    <field name="status" type="string" column="status" length="12" nullable="false">
       <options>
         <option name="fixed"/>
       </options>

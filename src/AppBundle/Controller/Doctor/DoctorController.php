@@ -62,5 +62,41 @@ class DoctorController extends Controller
             'form' => $form->createView(),
         ));
     }
+    /**
+     * @Route("/doctor/viewPatients/{id}", defaults={"id" = 0}, name="view_patients")     *
+     */
+    public function sportViewAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $connection = $em->getConnection();
+
+        $hospital=$this->getHospital();
+
+
+        if($id == 0) {
+
+            $query = "SELECT * FROM patient WHERE hospital_id=" .$hospital;
+            $statement = $connection->prepare($query);
+            $statement->execute();
+            $patients = $statement->fetchAll();
+
+            return $this->render('nurse/viewPatients.html.twig', array(
+                'patients' => $patients,
+            ));
+        }
+
+        $query = "SELECT * FROM records WHERE patient_id=" . $id ;
+        $statement = $connection->prepare($query);
+        $statement->execute();
+        $records = $statement->fetchAll();
+
+
+
+        return $this->render('nurse/viewRecords.html.twig', array(
+            'records' => $records, 'id' => $id,
+        ));
+
+    }
+
 
 }

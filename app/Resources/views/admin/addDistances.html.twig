@@ -1,0 +1,44 @@
+{% extends 'admin/home.html.twig' %}
+
+{% block main %}
+
+    <center><h4>Add Distances</h4></center>
+
+
+    {% if hospitals is defined %}
+        <p>hospitals </p>
+        <div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th><i class="fa fa-trophy"></i> Hospital</th>
+                    <th><i class="fa fa-trophy"></i> Distance</th>
+                </tr>
+                </thead>
+                <tbody>
+                <form name="input" action="" method="post">
+                    <tr>From -> {{ from }}</tr>
+                    {% for hospital in hospitals %}
+                        <tr><td>{{ hospital }}</td>
+                            <td><input type="number" name="distance[]"/></td>
+                        </tr>
+
+                    {% endfor %}
+                    <tr><input type="submit" name="submit" value="Submit"></tr>
+
+                </form>
+                </tbody>
+            </table>
+        </div>
+
+    {% else %}
+        <div class="row">
+            <div class="well">
+                <h4>New Distances successfully added to the system</h4> <br>
+            </div>
+
+        </div>
+    {% endif %}
+
+
+{% endblock %}

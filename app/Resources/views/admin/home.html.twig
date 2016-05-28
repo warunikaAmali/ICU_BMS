@@ -5,13 +5,16 @@
         {% if app.user and is_granted('ROLE_NURSE') %}
             <a href=" {{ path('add_patients') }} " class="list-group-item">Add Patients</a>
             <a href=" {{ path('addRecord') }} " class="list-group-item">Record Patient Details</a>
-            <a href=" {{ path('view_patients') }} " class="list-group-item">View Patient Details</a>
 
         {% endif %}
         {% if app.user and is_granted('ROLE_DOCTOR') %}
             <a href=" {{ path('view_patients') }} " class="list-group-item">View Patient Details</a>
             <a href=" {{ path('discharge_patients') }} " class="list-group-item">Discharge Patients</a>
-
+            <a href=" {{ path('search_icu') }} " class="list-group-item">Search ICU</a>
+        {% endif %}
+        {% if app.user and is_granted('ROLE_ADMIN') %}
+            <a href=" {{ path('addUser') }} " class="list-group-item">Add User</a>
+            <a href=" {{ path('addICU') }} " class="list-group-item">Add ICU</a>
         {% endif %}
         <a href="" class="list-group-item">Change Password</a>
 
@@ -26,5 +29,5 @@
 {% endblock %}
 
 {% block main %}
-    Welcome to Nurse's Page.
+    Welcome to Admin Page.
 {% endblock %}

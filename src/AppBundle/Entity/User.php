@@ -23,6 +23,13 @@ class User implements UserInterface
     /**
      * @var string
      *
+     * @ORM\Column(name="name", type="string", length=50, nullable=false)
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="role", type="string", length=20, nullable=true)
      */
     private $role;
@@ -73,6 +80,30 @@ class User implements UserInterface
     }
 
     /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return User
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
      * Set role
      *
      * @param string $role
@@ -97,6 +128,19 @@ class User implements UserInterface
     }
 
     /**
+     * Set username
+     *
+     * @param string $username
+     *
+     * @return User
+     */
+    public function setUsername($username)
+    {
+        $this->name = $username;
+
+        return $this;
+    }
+    /**
      * Get username
      *
      * @return string
@@ -113,7 +157,7 @@ class User implements UserInterface
      *
      * @return User
      */
-    public function setHospital(\AppBundle\Entity\Icu $hospital = null)
+    public function setHospital(\AppBundle\Entity\Icu $hospital)
     {
         $this->hospital = $hospital;
 
@@ -128,23 +172,6 @@ class User implements UserInterface
     public function getHospital()
     {
         return $this->hospital;
-    }
-
-    /**
-     * Returns the roles or permissions granted to the user for security.
-     */
-    public function getRoles()
-    {
-        //$roles = $this->roles;
-
-        // guarantees that a user always has at least one role for security
-        //if (empty($roles)) {
-        //$roles[] = 'ROLE_USER';
-        //}
-
-        //return array_unique($roles);
-
-        return array($this->role);
     }
 
     /**
@@ -166,5 +193,22 @@ class User implements UserInterface
     {
         // if you had a plainPassword property, you'd nullify it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * Returns the roles or permissions granted to the user for security.
+     */
+    public function getRoles()
+    {
+        //$roles = $this->roles;
+
+        // guarantees that a user always has at least one role for security
+        //if (empty($roles)) {
+        //$roles[] = 'ROLE_USER';
+        //}
+
+        //return array_unique($roles);
+
+        return array($this->role);
     }
 }

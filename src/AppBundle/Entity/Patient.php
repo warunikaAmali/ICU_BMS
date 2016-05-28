@@ -339,7 +339,7 @@ class Patient
      *
      * @return Patient
      */
-    public function setBedno(\AppBundle\Entity\Bed $bedno)
+    public function setBedno(\AppBundle\Entity\Bed $bedno = null)
     {
         $this->bedno = $bedno;
 
@@ -363,7 +363,7 @@ class Patient
      *
      * @return Patient
      */
-    public function setHospital(\AppBundle\Entity\Icu $hospital)
+    public function setHospital(\AppBundle\Entity\Icu $hospital = null)
     {
         $this->hospital = $hospital;
 

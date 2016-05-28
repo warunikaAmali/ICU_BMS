@@ -1,8 +1,10 @@
-{% extends 'nurse/home.html.twig' %}
+{% extends 'admin/home.html.twig' %}
+
+
 
 {% block main %}
 
-    <center><h4>Add a new Bed</h4></center>
+    <center><h4>Add a new User</h4></center>
     {% if form is defined %}
         {% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
         <div class="col-sm-11">
@@ -15,7 +17,7 @@
     {% else %}
         <div class="row">
             <div class="well">
-                <h4>New Bed successfully added to the system</h4> <br>
+                <h4>New User successfully added to the system</h4> <br>
 
             </div>
 

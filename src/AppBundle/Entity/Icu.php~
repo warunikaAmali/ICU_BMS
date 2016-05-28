@@ -50,5 +50,127 @@ class Icu
     private $id;
 
 
-}
 
+    /**
+     * Set hospital
+     *
+     * @param string $hospital
+     *
+     * @return Icu
+     */
+    public function setHospital($hospital)
+    {
+        $this->hospital = $hospital;
+
+        return $this;
+    }
+
+    /**
+     * Get hospital
+     *
+     * @return string
+     */
+    public function getHospital()
+    {
+        return $this->hospital;
+    }
+
+    /**
+     * Set address
+     *
+     * @param string $address
+     *
+     * @return Icu
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * Get address
+     *
+     * @return string
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * Set phonenumber
+     *
+     * @param integer $phonenumber
+     *
+     * @return Icu
+     */
+    public function setPhonenumber($phonenumber)
+    {
+        $this->phonenumber = $phonenumber;
+
+        return $this;
+    }
+
+    /**
+     * Get phonenumber
+     *
+     * @return integer
+     */
+    public function getPhonenumber()
+    {
+        return $this->phonenumber;
+    }
+
+    /**
+     * Set vacancies
+     *
+     * @param integer $vacancies
+     *
+     * @return Icu
+     */
+    public function setVacancies($vacancies)
+    {
+        $this->vacancies = $vacancies;
+
+        return $this;
+    }
+
+    /**
+     * Get vacancies
+     *
+     * @return integer
+     */
+    public function getVacancies()
+    {
+        return $this->vacancies;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $connection = $em->getConnection();
+        $query2 = "SELECT hospital FROM icu WHERE id!=". $id;
+        $statement2 = $connection->prepare($query2);
+        $statement2->execute();
+        $result2 = $statement2->fetchAll();
+
+        return $result2;
+    }
+
+}

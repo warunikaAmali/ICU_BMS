@@ -134,7 +134,7 @@ class Records
      *   @ORM\JoinColumn(name="patient_id", referencedColumnName="patient_id")
      * })
      */
-    private $patientId;
+    private $patient;
 
 
 
@@ -509,26 +509,26 @@ class Records
     }
 
     /**
-     * Set patientId
+     * Set patient
      *
-     * @param \AppBundle\Entity\Patient $patientId
+     * @param \AppBundle\Entity\Patient $patient
      *
      * @return Records
      */
-    public function setPatientId(\AppBundle\Entity\Patient $patientId = null)
+    public function setPatient(\AppBundle\Entity\Patient $patient = null)
     {
-        $this->patientId = $patientId;
+        $this->patient = $patient;
 
         return $this;
     }
 
     /**
-     * Get patientId
+     * Get patient
      *
      * @return \AppBundle\Entity\Patient
      */
-    public function getPatientId()
+    public function getPatient()
     {
-        return $this->patientId;
+        return $this->patient;
     }
 }
