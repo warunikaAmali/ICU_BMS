@@ -1,0 +1,23 @@
+{% extends 'admin/home.html.twig' %}
+
+{% block main %}
+
+    <center><h4>Change Password</h4></center>
+    {% if form is defined %}
+        {% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
+        <div class="col-sm-11">
+            <div class="well">
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+    {% else %}
+        <div class="row">
+            <div class="well">
+                <h4>Password Changed.</h4> <br>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}

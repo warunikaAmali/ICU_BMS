@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
+use AppBundle\Entity\changePassword;
 use AppBundle\Entity\Distance;
 use AppBundle\Entity\Icu;
 use AppBundle\Entity\Nurse;
@@ -11,6 +12,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
@@ -31,12 +34,14 @@ class AdminController extends Controller
     public function userAddAction(Request $request)
     {
         $user = new User();
+        print (" ");
+        print_r($user);
+        print (" ");
         $em = $this->getDoctrine()->getManager();
         $connection = $em->getConnection();
 
         $hospitals = $em->getRepository('AppBundle:Icu')->findAll();
         $form = $this->createFormBuilder($user)
-
             ->add('hospital', ChoiceType::class, [
                 'choices' => $hospitals,
                 'choice_label' => function($hospital, $key, $index) {
@@ -60,7 +65,8 @@ class AdminController extends Controller
             $form->handleRequest($request);
 
             if($form->isValid()){
-//                print_r($user);
+                print (" ");
+                print_r($user);
 				$data = $request->request->all();
 				$username = $data['form']['username'];
 				$plainPassword = "user";
@@ -177,4 +183,40 @@ class AdminController extends Controller
 
     }
 
+    /**
+     * @Route("/admin/change", name="change")
+     */
+    public function passwordChangeAction(Request $request)
+    {
+        $change=new changePassword();
+        $em = $this->getDoctrine()->getManager();
+        $connection = $em->getConnection();
+
+        //getting the current user's id
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $userId = $user->getUsername();
+
+        $form = $this->createFormBuilder($change)
+            ->add('currentPassword', PasswordType::class)
+            ->add('Password', RepeatedType::class, array(
+                'type' => PasswordType::class,
+                'invalid_message' => 'The password fields must match.',
+                'required' => true,
+                'first_options'  => array('label' => 'Password'),
+                'second_options' => array('label' => 'Repeat Password'),))
+            ->add('change', SubmitType::class)
+            ->getForm();
+
+        $form->handleRequest($request);
+        if($form->isValid()){
+            $encoder = $this->container->get('security.password_encoder');
+            $encoded = $encoder->encodePassword($user, $change->getPassword());
+            $query="UPDATE user set password='" .$encoded. "' WHERE username='" .$userId. "'";
+            $statement = $connection->prepare($query);
+            $statement->execute();
+            return $this->render('admin/change.html.twig');
+        }
+        return $this->render('admin/change.html.twig',array('form'=>$form->createView()));
+
+    }
 }

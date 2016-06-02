@@ -19,15 +19,12 @@
             <a href=" {{ path('addDistance') }} " class="list-group-item">Add Distances</a>
 
         {% endif %}
-        <a href="" class="list-group-item">Change Password</a>
-
     </div>
 {% endblock %}
 
 {% block about %}
     {% if app.user and is_granted('ROLE_NURSE') %}
         <a href=" {{ path('add_beds') }} " class="list-group-item">Add Bed Details</a>
-
     {% endif %}
     <a href=" {{ path('changePassword') }} " class="list-group-item">Change Password</a>
 {% endblock %}

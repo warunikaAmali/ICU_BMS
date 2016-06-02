@@ -7,6 +7,9 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ChangePasswordType extends AbstractType
 {
+    /**
+     * @Route("/changePassword", name="changePassword")
+     */
 public function buildForm(FormBuilderInterface $builder, array $options)
 {
 $builder->add('oldPassword', 'password');

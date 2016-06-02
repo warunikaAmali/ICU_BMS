@@ -89,17 +89,20 @@ class SecurityController extends Controller
         $userId=$this->get('security.token_storage')->getToken()->getUser()->getUsername();
 
         //Getting the current password of the user
-        $query1 = "SELECT password FROM user where username= '" . $userId. "'" ;
+        $query1 = "SELECT * FROM user where username= '" . $userId. "'" ;
         $statement1 = $connection->prepare($query1);
         $statement1->execute();
         $result1 = $statement1->fetchAll();
+        $user=$result1;
         foreach($result1 as $res){
             $currentPassword= $res['password'];
+//            $user=$res;
         }
 
         $post = Request::createFromGlobals();
         if ($post->request->has('submit')) {
 
+//            $user->setUsername($userId);
             print_r($user);
             $current= $_POST['current'];
             $new= $_POST['new'];
@@ -107,6 +110,9 @@ class SecurityController extends Controller
             $encoder = $this->container->get('security.password_encoder');
             $encodedCurrent = $encoder->encodePassword($user, $current);
             $encodedNew = $encoder->encodePassword($user, $new);
+
+            print($currentPassword);
+            print($encodedCurrent);
             if($currentPassword!=$encodedCurrent){
                 print_r("not equal");
                 //display Error msg
