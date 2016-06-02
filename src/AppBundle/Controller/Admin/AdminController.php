@@ -28,11 +28,9 @@ class AdminController extends Controller
     /**
      * @Route("/admin/addUser", name="addUser")
      */
-    public function nurseAddAction(Request $request)
+    public function userAddAction(Request $request)
     {
-
         $user = new User();
-
         $em = $this->getDoctrine()->getManager();
         $connection = $em->getConnection();
 
@@ -60,17 +58,24 @@ class AdminController extends Controller
             ->add('save', SubmitType::class, array('label' => 'Add new User'))
             ->getForm();
             $form->handleRequest($request);
+
             if($form->isValid()){
+//                print_r($user);
+				$data = $request->request->all();
+				$username = $data['form']['username'];
+				$plainPassword = "user";
+				$encoder = $this->container->get('security.password_encoder');
+				$encoded = $encoder->encodePassword($user, $plainPassword);
                 $query = "INSERT INTO user ";
                 $query .= "(username,password,name,role,hospital_id) ";
                 $query .= "VALUES ";
-                $query .= "('" . $user->getUsername() . "', '" . $user->getPassword() . "',";
+                $query .= "('" . $username . "', '" . $encoded . "',";
                 $query .= " '" . $user->getName() . "', '" . $user->getRole() . "'," . $user->getHospital()->getId() . " )";
                 $statement = $connection->prepare($query);
                 $statement->execute();
 
-//                print_r($statement);
-                return $this->render('admin/addUser.html.twig');
+                return $this->render('admin/addUser.html.twig', array('user' => $user,
+                ));
             }
             return $this->render('admin/addUser.html.twig', array('user' => $user,
                 'form' => $form->createView(),
@@ -83,14 +88,11 @@ class AdminController extends Controller
      */
     public function ICUAddAction(Request $request)
     {
-
         $icu = new Icu();
 
         $added=false;
         $em = $this->getDoctrine()->getManager();
         $connection = $em->getConnection();
-
-
 
         $form = $this->createFormBuilder($icu)
             ->add('hospital', TextType::class, ['required' => true])
@@ -100,7 +102,6 @@ class AdminController extends Controller
             ->getForm();
         $form->handleRequest($request);
         if($form->isValid()){
-
             $query1 = "SELECT id FROM icu WHERE hospital='" .$icu->getHospital(). "'";
             $statement1 = $connection->prepare($query1);
             $statement1->execute();
@@ -118,7 +119,6 @@ class AdminController extends Controller
             }else{
                 $added='Already Added!';
             }
-
         }
         return $this->render('admin/addIcu.html.twig', array('user' => $icu,
             'form' => $form->createView(),'added'=>$added,
@@ -131,7 +131,6 @@ class AdminController extends Controller
      */
     public function distanceAddAction(Request $request,$id)
     {
-
         $distance = new Distance();
 
         $em = $this->getDoctrine()->getManager();
@@ -160,12 +159,9 @@ class AdminController extends Controller
         }
 
         $post = Request::createFromGlobals();
-
         $distances= array();
         if ($post->request->has('submit')) {
             $distances = $_POST['distance'];
-            print_r($hids[0]);
-            print_r($distances[0]);
             for( $i=0;$i<sizeof($distances);$i++){
                 $query3 = "INSERT INTO distance (location1, location2, distance) VALUES " ;
                 $query3 .= "(" . $hid . ", " . $hids[$i] . "," . $distances[$i] . ")";

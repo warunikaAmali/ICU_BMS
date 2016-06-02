@@ -323,6 +323,19 @@ class Patient
     }
 
     /**
+     * Set patientId
+     *
+     * @param integer $patientId
+     *
+     * @return Patient
+     */
+    public function setPatientId($patientId )
+    {
+        $this->patientId = $patientId;
+
+        return $this;
+    }
+    /**
      * Get patientId
      *
      * @return integer

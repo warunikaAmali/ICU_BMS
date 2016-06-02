@@ -10,7 +10,6 @@ use AppBundle\Entity\Nurse;
 use AppBundle\Entity\Operation;
 use AppBundle\Entity\Patient;
 use AppBundle\Entity\Records;
-
 use AppBundle\Entity\User;
 use AppBundle\Form\ChangePasswordType;
 use AppBundle\Form\Model\ChangePassword;
@@ -68,6 +67,8 @@ class NurseController extends Controller
 
         $hospital_id=$this->getHospital();
 
+
+
         //getting the available beds of hospital
         $query2 = "SELECT bedNo FROM bed WHERE hospital_id=". $hospital_id. " AND status='Not Occupied'";
         $statement2 = $connection->prepare($query2);
@@ -82,6 +83,17 @@ class NurseController extends Controller
                 $beds[$res['bedNo']] = $res['bedNo'];
 
             }
+
+            //getting the vacancies of the hospital
+            $query1 = "SELECT vacancies FROM icu WHERE id=". $hospital_id;
+            $statement1 = $connection->prepare($query1);
+            $statement1->execute();
+            $result1 = $statement1->fetchAll();
+            foreach($result1 as $res){
+                $vacancy = $res['vacancies']-1;
+
+            }
+
             $query3="SELECT patient_id from patient";
             $statement3 = $connection->prepare($query3);
             $statement3->execute();
@@ -116,22 +128,26 @@ class NurseController extends Controller
             $form->handleRequest($request);
 
             if($form->isValid()){
+                $dis='0000-00-00';
 
-                print_r("DDDDDd");
                 $query_patient = "INSERT INTO patient ";
                 $query_patient .= "(hospital_id, bedNo, name, gender, nic, birthDate, ";
-                $query_patient .= "phoneNumber, address, admittedDate, reasonToAdmit)";
+                $query_patient .= "phoneNumber, address, admittedDate,dischargedDate, reasonToAdmit)";
                 $query_patient .= "VALUES ";
                 $query_patient .= "(" .$hospital_id. ", " . $patient->getBedno() . ", '" . $patient->getName() . "', ";
                 $query_patient .= "'" . $patient->getGender() . "', '" . $patient->getNic() . "', '" . $patient->getBirthDate()->format('y/m/d') . "', ";
                 $query_patient .= "" . $patient->getPhonenumber() . ", '" . $patient->getAddress() . "', ";
-                $query_patient .= "'" . $patient->getAdmitteddate()->format('y/m/d') . "', '" . $patient->getReasontoadmit() ."' )";
+                $query_patient .= "'" . $patient->getAdmitteddate()->format('y/m/d') . "','" . $dis. "' ,'" . $patient->getReasontoadmit() ."' )";
                 $statement = $connection->prepare($query_patient);
                 $statement->execute();
 
                 $query_bed="UPDATE bed set status='Occupied' WHERE hospital_id=" .$hospital_id. " AND bedNo=" .$patient->getBedno();
                 $statementb = $connection->prepare($query_bed);
                 $statementb->execute();
+
+                $query_icu="UPDATE icu set vacancies=" .$vacancy. " WHERE id=" .$hospital_id;
+                $statementi = $connection->prepare($query_icu);
+                $statementi->execute();
 
                 return $this->render('nurse/addPatient.html.twig', array('patient' => $patient,
 
@@ -235,10 +251,16 @@ class NurseController extends Controller
         $connection = $em->getConnection();
         $hospital_id=$this->getHospital();
 
-        $icu = $this->getDoctrine()
-            ->getRepository('AppBundle:Icu')->find($hospital_id);
+        //getting the vacancies of the hospital
+        $query1 = "SELECT vacancies FROM icu WHERE id=". $hospital_id;
+        $statement1 = $connection->prepare($query1);
+        $statement1->execute();
+        $result1 = $statement1->fetchAll();
+        foreach($result1 as $res){
+            $vacancy = $res['vacancies']+1;
 
-        print_r($icu);
+        }
+
         $form = $this->createFormBuilder($bed)
 
             ->add('status', ChoiceType::class, array('choices' => array('Occupied' => 'Occupied', 'Not Occupied'=>'Not Occupied')))
@@ -256,6 +278,9 @@ class NurseController extends Controller
             $statement = $connection->prepare($query);
             $statement->execute();
 
+            $query_icu="UPDATE icu set vacancies=" .$vacancy. " WHERE id=" .$hospital_id;
+            $statementi = $connection->prepare($query_icu);
+            $statementi->execute();
 
             return $this->render('nurse/addBed.html.twig');
         }

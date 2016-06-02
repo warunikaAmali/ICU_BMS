@@ -7,6 +7,8 @@ use AppBundle\Entity\Patient;
 use AppBundle\Entity\Records;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
@@ -20,6 +22,25 @@ class DoctorController extends Controller
         return $this->render('doctor/home.html.twig', array());
     }
 
+    public function getHospital(){
+        $em = $this->getDoctrine()->getManager();
+        $connection = $em->getConnection();
+
+        //getting the current user's id
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $userId = $user->getUsername();
+
+        //getting the hospital of current user
+        $query = "SELECT hospital_id FROM user WHERE username='$userId'";
+        $statement = $connection->prepare($query);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        foreach($result as $res){
+            $hospital_id = $res['hospital_id'];
+        }
+        return $hospital_id;
+    }
+
     /**
      * @Route("/doctor/dischargePatient", name="discharge_patients")
      */
@@ -29,9 +50,19 @@ class DoctorController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $connection = $em->getConnection();
+        $hospital_id=$this->getHospital();
 
+        //getting the vacancies of the hospital
+        $query1 = "SELECT vacancies FROM icu WHERE id=". $hospital_id;
+        $statement1 = $connection->prepare($query1);
+        $statement1->execute();
+        $result1 = $statement1->fetchAll();
+        foreach($result1 as $res){
+            $vacancy = $res['vacancies']+1;
 
-        $query = "SELECT BHT_No FROM patient";
+        }
+
+        $query = "SELECT patient_id FROM patient WHERE dischargedDate='0000-00-00'";
         $statement = $connection->prepare($query);
         $statement->execute();
         $result = $statement->fetchAll();
@@ -39,12 +70,12 @@ class DoctorController extends Controller
         $bhtNo_list = array();
 
         foreach($result as $res){
-            $bhtNo_list[$res['BHT_No']] = $res['BHT_No'];
+            $bhtNo_list[$res['patient_id']] = $res['patient_id'];
         }
 
         $form = $this->createFormBuilder($patient)
 
-            ->add('bhtNo',ChoiceType::class, ['choices' => $bhtNo_list])
+            ->add('patientId',ChoiceType::class, ['choices' => $bhtNo_list])
             ->add('save', SubmitType::class, array('label' => 'Discharge Patient'))
             ->getForm();
 
@@ -52,13 +83,29 @@ class DoctorController extends Controller
 
         if($form->isValid()){
             $query_patient = "UPDATE patient SET dischargedDate =  CURRENT_TIMESTAMP ";
-            $query_patient .= "WHERE BHT_No=  " . $patient->getBhtNo() . "" ;
+            $query_patient .= " WHERE patient_id=  " . $patient->getPatientId() ;
             $statement = $connection->prepare($query_patient);
             $statement->execute();
 
-            return $this->render('nurse/dischargePatient.html.twig');
+            $query_icu="UPDATE icu set vacancies=" .$vacancy. " WHERE id=" .$hospital_id;
+            $statementi = $connection->prepare($query_icu);
+            $statementi->execute();
+
+            $queryp = "SELECT bedNo FROM patient WHERE patient_id=" . $patient->getPatientId();
+            $statementp = $connection->prepare($queryp);
+            $statementp->execute();
+            $resultp = $statementp->fetchAll();
+
+            foreach($resultp as $res){
+                $bed = $res['bedNo'];
+            }
+            $query_bed="UPDATE bed set status='Not Occupied' WHERE hospital_id=" .$hospital_id. " AND bedNo= " . $bed ;
+            $statementb = $connection->prepare($query_bed);
+            $statementb->execute();
+
+            return $this->render('doctor/dischargePatient.html.twig');
         }
-        return $this->render('nurse/dischargePatient.html.twig', array('patient' => $patient,
+        return $this->render('doctor/dischargePatient.html.twig', array('patient' => $patient,
             'form' => $form->createView(),
         ));
     }
@@ -80,7 +127,7 @@ class DoctorController extends Controller
             $statement->execute();
             $patients = $statement->fetchAll();
 
-            return $this->render('nurse/viewPatients.html.twig', array(
+            return $this->render('doctor/viewPatients.html.twig', array(
                 'patients' => $patients,
             ));
         }
@@ -92,7 +139,7 @@ class DoctorController extends Controller
 
 
 
-        return $this->render('nurse/viewRecords.html.twig', array(
+        return $this->render('doctor/viewRecords.html.twig', array(
             'records' => $records, 'id' => $id,
         ));
 

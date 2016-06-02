@@ -4,6 +4,8 @@ namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Entity\User;
 
 class SecurityController extends Controller
 {
@@ -72,5 +74,59 @@ class SecurityController extends Controller
     public function logoutAction()
     {
         throw new \Exception('This should never be reached!');
+    }
+
+    /**
+     * @Route("/changePassword", name="changePassword")
+     */
+    public function changePasswordAction(Request $request)
+    {
+        $user=new User();
+        $em = $this->getDoctrine()->getManager();
+        $connection = $em->getConnection();
+
+        //getting the current user's id
+        $userId=$this->get('security.token_storage')->getToken()->getUser()->getUsername();
+
+        //Getting the current password of the user
+        $query1 = "SELECT password FROM user where username= '" . $userId. "'" ;
+        $statement1 = $connection->prepare($query1);
+        $statement1->execute();
+        $result1 = $statement1->fetchAll();
+        foreach($result1 as $res){
+            $currentPassword= $res['password'];
+        }
+
+        $post = Request::createFromGlobals();
+        if ($post->request->has('submit')) {
+
+            print_r($user);
+            $current= $_POST['current'];
+            $new= $_POST['new'];
+            $retype= $_POST['retype'];
+            $encoder = $this->container->get('security.password_encoder');
+            $encodedCurrent = $encoder->encodePassword($user, $current);
+            $encodedNew = $encoder->encodePassword($user, $new);
+            if($currentPassword!=$encodedCurrent){
+                print_r("not equal");
+                //display Error msg
+            }else{
+                print_r("Correct curent pwd");
+                if($new==$retype){
+                    print_r(" matching");
+
+                    $query2 = "UPDATE user SET password='" . $encodedNew. "' WHERE username='" . $userId. "'";
+                    $statement2 = $connection->prepare($query2);
+                    $statement2->execute();
+                }else{
+                    //display Error msg
+                }
+            }
+            return $this->render('security/changePassword.html.twig', array('new'=> $encodedCurrent));
+        } else {
+//            $name = 'Not submitted yet';
+        }
+
+        return $this->render('security/changePassword.html.twig', array('form'=> $userId) );
     }
 }
